@@ -45,8 +45,8 @@ tailwind.config = {
 }
 </script>
 <link rel="stylesheet" href="style.css">
-<script src="three.min.js" defer async></script>
-<script src="lucide@latest" defer async></script>
+<script src="three.min.js"></script>
+<script src="lucide@latest"></script>
 </head>
 <body class="overflow-x-hidden" style="background:#150329;color:#E0EAF4;font-family:Inter,system-ui,sans-serif">
 
@@ -802,11 +802,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<script src="script.js" defer></script>
+<script src="script.js"></script>
+<script src="three-background-optimized.js"></script>
+<script src="animations-optimized.js"></script>
 <script src="performance-optimizations.js"></script>
 
-<!-- Service Worker Registration -->
+<!-- Inicializar background otimizado -->
 <script>
+// Substituir função original pela otimizada
+if (typeof initGridAnimationOptimized !== 'undefined') {
+    window.initGridAnimation = initGridAnimationOptimized;
+}
+</script>
+
+<!-- Service Worker Registration (comentado por padrão) -->
+<script>
+// Descomente para ativar Service Worker (requer HTTPS ou localhost)
+/*
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -814,6 +826,7 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('Service Worker:', err));
     });
 }
+*/
 </script>
 
 </body>

@@ -1526,8 +1526,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Animazione grid
-    initGridAnimation('deep-space', true);
+    // Animazione grid (versão otimizada)
+    if (typeof initGridAnimationOptimized !== 'undefined') {
+        initGridAnimationOptimized('deep-space', true);
+    }
 
     // Inizializza Sistemi
     initClickExplosion();
