@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Performance Optimizations -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="logo.png" as="image" importance="high">
+<link rel="preload" href="style.css" as="style" importance="high">
+<link rel="preload" href="script.js" as="script" importance="high">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#150329">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no">
+
+<title>KT OPTIMIZER - Otimização Real</title>
+<meta name="description" content="KT Optimizer - Otimização real e profunda de kernel para Windows. Melhore FPS, reduza latência e maximize o desempenho do seu PC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+// Tailwind config must be before CDN loads
+window.tailwind = window.tailwind || {};
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=typography" async></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'electric': { DEFAULT: '#9061F9', 400: '#A78BFA', 500: '#9061F9', 600: '#7C3AED' },
+        'KT Optimizer': { 50: '#E8F4FF', 100: '#C8E0F4', 200: '#A0C4E8', 300: '#7A9BB8', 400: '#5A7B98', 900: '#150329', 950: '#070F1A' },
+      },
+      fontFamily: { sans: ['Inter','Segoe UI','system-ui','sans-serif'], mono: ['JetBrains Mono','monospace'] },
+      keyframes: {
+        'liquid-drop-entry': { '0%': { opacity:'0', transform:'scale(0.6) translateY(-30px)', filter:'blur(10px)' }, '100%': { opacity:'1', transform:'scale(1) translateY(0)', filter:'blur(0)' } },
+        'liquid-drop-exit': { '0%': { opacity:'1', transform:'scale(1)', filter:'blur(0)' }, '100%': { opacity:'0', transform:'scale(0.8) translateY(20px)', filter:'blur(8px)' } },
+      }
+    }
+  }
+}
+</script>
+<link rel="stylesheet" href="style.css">
+<script src="three.min.js" defer async></script>
+<script src="lucide@latest" defer async></script>
+</head>
+<body class="overflow-x-hidden" style="background:#150329;color:#E0EAF4;font-family:Inter,system-ui,sans-serif">
+
+<!-- 3D BACKGROUND -->
+<div id="global-animation-container" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></div>
+
+<!-- PAGE TRANSITION -->
+<div id="page-transition" class="fixed inset-0 z-[99999] bg-black opacity-0 pointer-events-none transition-opacity duration-700"></div>
+
+<!-- ============ MODAIS ============ -->
+
+<!-- Modal: Welcome Popup -->
+<div id="modal-welcome" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('welcome')"></div>
+  <div class="liquid-glass-modal relative bg-black/40 border border-border2 rounded-2xl p-8 max-w-md w-[90%] text-center shadow-2xl z-10">
+    <div class="absolute inset-0 rounded-2xl overflow-hidden">
+      <img src="kt-interface.png" alt="" class="w-full h-full object-cover" style="filter:brightness(.2)">
+    </div>
+    <div class="relative z-10">
+      <div class="text-4xl mb-3">⚡</div>
+      <h2 class="text-2xl font-bold text-electric mb-3" data-i18n="welcome.title">KT Supreme V2 Lançado!</h2>
+      <p class="text-text2 text-sm leading-relaxed mb-6" data-i18n="welcome.subtitle">A espera acabou. Baixe agora!</p>
+      <div class="flex gap-3 justify-center flex-wrap">
+        <a href="#download" onclick="closeModal('welcome')" class="btn btn-primary" data-i18n="welcome.btnDownload">⬇ BAIXAR</a>
+        
+      </div>
+      <button onclick="closeModal('welcome')" class="mt-4 text-text3 text-xs hover:text-text2 transition-colors">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Privacy -->
+<div id="modal-privacy" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('privacy')"></div>
+  <div class="liquid-glass-modal relative bg-black/40 border border-border2 rounded-2xl p-8 max-w-2xl w-[90%] max-h-[80vh] overflow-y-auto z-10">
+    <button onclick="closeModal('privacy')" class="absolute top-4 right-4 text-text3 hover:text-red text-xl">✕</button>
+    <h2 class="text-2xl font-bold text-green mb-4">🔒 Política de Privacidade</h2>
+    <div id="modal-content-privacy" class="text-text2 text-sm leading-relaxed space-y-2"></div>
+  </div>
+</div>
+
+<!-- Modal: Disclaimer -->
+<div id="modal-disclaimer" class="fixed inset-0 z-[9000] flex items-center justify-center hidden">
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal('disclaimer')"></div>
+  <div class="liquid-glass-modal relative bg-black/40 border border-border2 rounded-2xl p-8 max-w-2xl w-[90%] max-h-[80vh] overflow-y-auto z-10">
+    <button onclick="closeModal('disclaimer')" class="absolute top-4 right-4 text-text3 hover:text-red text-xl">✕</button>
+    <h2 class="text-2xl font-bold text-yellow mb-4">⚠️ Aviso Legal</h2>
+    <pre id="modal-content-disclaimer" class="text-text2 text-sm leading-relaxed whitespace-pre-wrap font-sans"></pre>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="modal-lightbox" class="fixed inset-0 z-[9500] flex items-center justify-center hidden" onclick="closeLightbox()">
+  <div class="absolute inset-0 bg-black/95"></div>
+  <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl z-10 opacity-60 hover:opacity-100">✕</button>
+  <img id="lightbox-img" src="" alt="" class="relative z-10 max-w-[92vw] max-h-[92vh] object-contain rounded-lg" style="box-shadow:0 0 60px rgba(31,111,255,.2)">
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="fixed top-6 left-0 right-0 mx-auto w-[95%] max-w-7xl z-[1000] flex items-center justify-between px-4 sm:px-6 py-3 rounded-[2rem] bg-[#070114]/60 backdrop-blur-2xl border border-white/5 shadow-[0_0_40px_rgba(124,58,237,0.15)] transition-all duration-300 overflow-hidden">
+  <div id="nav-glow" class="absolute top-1/2 -translate-y-1/2 w-32 h-32 bg-[#7C3AED]/40 blur-[40px] rounded-full opacity-0 pointer-events-none transition-all duration-300 ease-out" style="left: 0;"></div>
+  <div class="relative z-10 flex items-center justify-between w-full">
+  <a href="#hero-section" onclick="scrollToSection('hero-section')" class="nav-logo flex items-center gap-2 font-bold text-sm flex-shrink-0" style="display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem;flex-shrink:0;text-decoration:none;color:inherit">
+    <img src="logo.png" alt="Logo" style="width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0">
+    <span>KT <span style="color:var(--electric)">OPTIMIZER</span></span>
+  </a>
+
+  <!-- Desktop Nav -->
+  <div id="nav-menu-container" class="relative hidden md:flex items-center gap-1" style="display:flex;align-items:center;gap:.15rem;position:relative">
+    <div id="nav-blob" class="absolute bg-white/5 rounded-full pointer-events-none transition-all duration-300 opacity-0" style="z-index:0"></div>
+    <button onclick="scrollToSection('hero-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.home">Início</button>
+    <button onclick="scrollToSection('about-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.about">O que é</button>
+    <button onclick="scrollToSection('virustotal-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.virustotal">VirusTotal</button>
+    <button onclick="scrollToSection('benchmarks-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.benchmark">Benchmark</button>
+    <button onclick="scrollToSection('changelog-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.changelog">Novidades</button>
+    <button onclick="scrollToSection('target-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.target">Para Quem</button>
+    <button onclick="scrollToSection('steps-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.howItWorks">Guia</button>
+    <button onclick="scrollToSection('faq-section')" class="relative z-10 px-3 py-1.5 text-text2 hover:text-text text-sm font-medium transition-colors" data-i18n="nav.faq">FAQ</button>
+  </div>
+
+  <div class="flex items-center gap-3 flex-shrink-0">
+    <!-- Lang Selector -->
+    <div class="relative lang-selector hidden md:block">
+      <button class="lang-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-text2 text-sm hover:border-electric hover:text-electric transition-all">
+        <span id="current-lang-flag">🇧🇷</span>
+        <span id="current-lang-code">PT</span>
+        <i data-lucide="chevron-down" class="w-3 h-3"></i>
+      </button>
+      <div class="lang-dropdown absolute top-full right-0 mt-2 bg-black/40 border border-border2 rounded-xl overflow-hidden min-w-[130px] opacity-0 invisible translate-y-[-8px] transition-all z-50">
+        <a href="#" onclick="setLanguage('pt');return false" class="flex items-center gap-2 px-4 py-2.5 text-sm text-text2 hover:bg-white/5 hover:text-electric">🇧🇷 Português</a>
+        <a href="#" onclick="setLanguage('en');return false" class="flex items-center gap-2 px-4 py-2.5 text-sm text-text2 hover:bg-white/5 hover:text-electric">🇬🇧 English</a>
+        <a href="#" onclick="setLanguage('it');return false" class="flex items-center gap-2 px-4 py-2.5 text-sm text-text2 hover:bg-white/5 hover:text-electric">🇮🇹 Italiano</a>
+        <a href="#" onclick="setLanguage('ru');return false" class="flex items-center gap-2 px-4 py-2.5 text-sm text-text2 hover:bg-white/5 hover:text-electric">🇷🇺 Русский</a>
+      </div>
+    </div>
+
+    <div class="hidden md:flex items-center bg-black/40 border border-border rounded-xl px-2 py-0.5 text-xs font-bold text-electric">
+      KT Supreme V2
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-text2 hover:text-text">
+      <i id="mobile-menu-icon" data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-16 left-0 right-0 z-[999] bg-bg/98 border-b border-border hidden flex-col py-4 px-6 gap-2 backdrop-blur-lg">
+  <button onclick="scrollToSection('hero-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.home">Início</button>
+  <button onclick="scrollToSection('about-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.about">O que é</button>
+  <button onclick="scrollToSection('virustotal-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.virustotal">VirusTotal</button>
+  <button onclick="scrollToSection('benchmarks-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.benchmark">Benchmark</button>
+  <button onclick="scrollToSection('changelog-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.changelog">Novidades</button>
+  <button onclick="scrollToSection('target-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.target">Para Quem</button>
+  <button onclick="scrollToSection('steps-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 border-b border-border text-sm" data-i18n="nav.howItWorks">Guia</button>
+  <button onclick="scrollToSection('faq-section');toggleMobileMenu()" class="text-text2 text-left py-2.5 text-sm" data-i18n="nav.faq">FAQ</button>
+  <!-- Mobile lang buttons -->
+  <div class="flex gap-3 pt-3 flex-wrap">
+    <button onclick="setLanguage('pt')" class="text-xs px-3 py-1.5 rounded-lg border border-border text-text2">🇧🇷 PT</button>
+    <button onclick="setLanguage('en')" class="text-xs px-3 py-1.5 rounded-lg border border-border text-text2">🇬🇧 EN</button>
+    <button onclick="setLanguage('it')" class="text-xs px-3 py-1.5 rounded-lg border border-border text-text2">🇮🇹 IT</button>
+    <button onclick="setLanguage('ru')" class="text-xs px-3 py-1.5 rounded-lg border border-border text-text2">🇷🇺 RU</button>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section id="hero-section" class="hero relative min-h-[90vh] pt-32 pb-16 flex items-center justify-center overflow-hidden px-4">
+    <div class="absolute top-[30%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#7C3AED]/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+
+    <div class="max-w-[1600px] mx-auto px-2 md:px-6 relative z-10 pointer-events-none mt-10">
+      <div class="pointer-events-auto grid grid-cols-1 lg:grid-cols-[2.4fr_1fr_2.4fr] gap-8 xl:gap-20 items-center">
+
+        <!-- Left Column -->
+        <div class="order-2 lg:order-1 relative w-full mx-auto lg:max-w-none transform transition-all duration-700 lg:scale-110 xl:scale-125 animate-float flex flex-col items-center">
+          <div class="text-center mb-6 text-[#A78BFA] font-bold tracking-widest text-xs uppercase" data-i18n="hero.imageLabelLeft">Console View</div>
+          <div id="hero-left-trigger" class="relative group overflow-hidden rounded-2xl modern-frame shadow-[0_0_60px_rgba(124,58,237,0.15)] group-hover:shadow-[0_0_100px_rgba(124,58,237,0.3)] transition-all duration-500 cursor-zoom-in" onclick="openLightbox('kt-interface.png', this)">
+            <img src="kt-interface.png" alt="Interface Left" width="800" height="600" loading="lazy" decoding="async" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500 will-change-transform" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#7C3AED]/10 to-transparent pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Middle Column -->
+        <div class="order-1 lg:order-2 text-center flex flex-col items-center justify-center w-full max-w-[400px] mx-auto">
+          <div class="mb-10 flex justify-center reveal-on-scroll">
+            <img src="logo.png" alt="KT Optimizer Logo" width="144" height="144" loading="lazy" decoding="async" class="w-36 h-36 relative z-10 drop-shadow-[0_0_35px_rgba(124,58,237,0.6)] rounded-[2rem] object-cover border border-white/5 animate-glow-blue" draggable="false" oncontextmenu="return false">
+          </div>
+          <h1 class="font-serif text-5xl md:text-6xl xl:text-7xl font-bold leading-tight mb-8 text-white tracking-tight drop-shadow-2xl reveal-on-scroll" data-i18n="hero.headline">KT OPTIMIZER</h1>
+          <p class="text-lg md:text-xl text-kt-300 mb-10 leading-relaxed font-light max-w-lg mx-auto reveal-on-scroll reveal-delay-200" data-i18n="hero.subheadline">Performance extrema para Windows.</p>
+          
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal-on-scroll reveal-delay-300 w-full mb-12">
+            <button onclick="handleDownload()" class="w-full sm:w-auto shadow-strong-glow inline-flex items-center justify-center px-12 py-5 text-lg font-medium rounded-full transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#7C3AED]/20 bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white hover:from-[#A78BFA] hover:to-[#7C3AED] hover:scale-105 active:scale-95 group">
+              <i data-lucide="download" class="mr-3 w-6 h-6 group-hover:animate-bounce"></i>
+              <span data-i18n="hero.ctaDownloadExe">Download em breve</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="order-3 lg:order-3 relative w-full mx-auto lg:max-w-none transform transition-all duration-700 lg:scale-110 xl:scale-125 animate-float-delayed flex flex-col items-center">
+          <div class="text-center mb-6 text-[#A78BFA] font-bold tracking-widest text-xs uppercase" data-i18n="hero.imageLabelRight">Resultados</div>
+          <div id="hero-right-trigger" class="relative group rounded-[2rem] overflow-hidden glass modern-frame border border-white/5 shadow-[0_0_60px_rgba(124,58,237,0.15)] group-hover:shadow-[0_0_100px_rgba(124,58,237,0.3)] transition-all duration-500 cursor-zoom-in" onclick="openLightbox('task.jpg', this)">
+            <img src="task.jpg" alt="Interface Right" loading="lazy" decoding="async" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity will-change-transform" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#7C3AED]/15 to-transparent pointer-events-none"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#150329]/0 to-[#150329]/0 pointer-events-none"></div>
+</section>
+
+
+<!-- ============ O QUE É ============ -->
+<section id="about-section" class="py-24 md:py-32  reveal-on-scroll">
+  <div class="container">
+    <div class="reveal-on-scroll text-center mb-16">
+      <div class="s-label">Sobre</div>
+      <h2 class="s-title" data-i18n="about.title">O que é o KT Optimizer</h2>
+      <div class="divider-line mx-auto"></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
+      <div class="space-y-5">
+        <p class="text-text2 text-lg leading-relaxed font-light" data-i18n="about.description1">O KT Optimizer não é apenas um software, mas uma suíte de diretivas de engenharia que interagem com o Kernel do Windows para eliminar gargalos de software.</p>
+        <p class="text-text2 text-base leading-relaxed font-light" data-i18n="about.description2">O objetivo é fornecer a máxima responsividade do sistema e estender a vida útil dos componentes de hardware do PC.</p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Mais FPS</span>
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Menos RAM</span>
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Boot Rápido</span>
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Sem Telemetria</span>
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Sem Bloatware</span>
+          <span class="px-3 py-1.5 rounded-full bg-electric/10 border border-electric/20 text-electric text-xs font-semibold">Rede Otimizada</span>
+        </div>
+      </div>
+      <div class="image-zoom-trigger relative rounded-2xl overflow-hidden border border-border cursor-zoom-in group">
+        <img src="kt-interface.png" alt="KT Optimizer Interface" loading="lazy" decoding="async" class="w-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="absolute inset-0 border border-electric/0 group-hover:border-electric/20 rounded-2xl transition-colors duration-500"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ ADVANCED FEATURES ACCORDION ============ -->
+<section id="advanced-features" class="py-24 md:py-32 relative z-10 reveal-on-scroll">
+  <div class="container max-w-4xl mx-auto px-4">
+    <div class="reveal-on-scroll text-center mb-16">
+      <div class="s-label">Poder Absoluto</div>
+      <h2 class="s-title text-4xl font-bold text-white mb-4">Gargalos Eliminados</h2>
+      <div class="divider-line mx-auto"></div>
+    </div>
+    
+    <div class="bg-[#0A051A]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-10 shadow-[0_0_50px_rgba(124,58,237,0.1)]">
+      <div class="space-y-2">
+        
+        <!-- Accordion Item 1 -->
+        <div class="accordion-item border-b border-white/5 overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              CPU Performance Optimization
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Ajustes diretos nos registradores de hardware e gerenciamento de energia para garantir que a CPU entregue máximo clock de forma constante em cenários de estresse, reduzindo P-State transitions.</p>
+          </div>
+        </div>
+
+        <!-- Accordion Item 2 -->
+        <div class="accordion-item border-b border-white/5 overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              GPU Performance Optimization
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Desabilitação do MPO (Multi-Plane Overlay) e ajustes na latência do render queue, forçando o Windows a dar prioridade absoluta de interrupção PCI-E para sua placa de vídeo.</p>
+          </div>
+        </div>
+
+        <!-- Accordion Item 3 -->
+        <div class="accordion-item border-b border-white/5 overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              System Debloater
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Limpeza extrema removendo todos os aplicativos UWP inúteis, telemetria embutida e processos fantasmas da Microsoft que consomem recursos vitalícios no fundo.</p>
+          </div>
+        </div>
+
+        <!-- Accordion Item 4 -->
+        <div class="accordion-item border-b border-white/5 overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              Services Optimizer
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Corte drástico nos serviços do Windows. Deixamos apenas os micro-serviços estritamente necessários para o funcionamento do Core OS, liberando centenas de MB de RAM.</p>
+          </div>
+        </div>
+
+        <!-- Accordion Item 5 -->
+        <div class="accordion-item border-b border-white/5 overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              Network Optimizer
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Tweaks profundos na pilha TCP/IP, desabilitação de algoritmos de Nagle e ajustes de MTU para garantir o menor ping fisicamente possível nas suas rotas de jogos.</p>
+          </div>
+        </div>
+
+        <!-- Accordion Item 6 -->
+        <div class="accordion-item border-transparent overflow-hidden">
+          <button class="accordion-header w-full flex items-center justify-between py-5 text-left transition-colors hover:text-electric group">
+            <span class="text-lg font-medium text-kt-300 group-hover:text-white transition-colors flex items-center gap-3">
+              <i data-lucide="chevron-right" class="w-5 h-5 text-electric transition-transform duration-300 accordion-icon"></i>
+              RAM/Memory Optimizer
+            </span>
+          </button>
+          <div class="accordion-content max-h-0 opacity-0 transition-all duration-500 ease-in-out">
+            <p class="text-text2 pb-6 pl-8 text-sm leading-relaxed">Alinhamento rigoroso de páginas de memória e expurgo agressivo de standby lists para evitar stuttering de frametime por memory leaking do Windows.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ VIRUSTOTAL ============ -->
+<section id="virustotal-section" class="py-24 md:py-32 reveal-on-scroll">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="s-label">Segurança</div>
+      <h2 class="s-title" data-i18n="virustotal.title">VirusTotal e Verificações</h2>
+      <div class="divider-line mx-auto"></div>
+      <p class="text-text2 max-w-lg mx-auto mt-4" data-i18n="virustotal.subtitle">O arquivo foi verificado no VirusTotal e é completamente seguro.</p>
+    </div>
+    <div class="max-w-4xl mx-auto">
+      <div class="vt-card flex flex-col md:flex-row items-center gap-10 bg-black/40 border border-border2 rounded-2xl p-8">
+        <!-- Donut -->
+        <div class="flex flex-col items-center gap-2 flex-shrink-0">
+          <div class="vt-donut relative">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              <circle cx="75" cy="75" r="60" fill="none" stroke="var(--border)" stroke-width="10"/>
+              <circle cx="75" cy="75" r="60" fill="none" stroke="var(--yellow)" stroke-width="10"
+                stroke-dasharray="376.99" stroke-dashoffset="358.14"
+                stroke-linecap="round" transform="rotate(-90 75 75)"/>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="vt-num text-3xl font-black text-white">3</span>
+              <span class="vt-denom text-xs text-text3">de 62</span>
+            </div>
+          </div>
+          <div class="text-green text-sm font-bold">✓ SEGURO</div>
+        </div>
+        <!-- Info -->
+        <div class="flex-1 space-y-4">
+          <h3 class="text-xl font-bold text-white">Falso Positivo Confirmado</h3>
+          <p class="text-text2 text-sm leading-relaxed">Otimizadores de sistema que modificam o kernel e registros do Windows frequentemente acionam heurísticas de antivírus. As 3 detecções são <strong class="text-green">falso positivo confirmado</strong>. O KT Optimizer não contém malware, vírus, spyware ou qualquer código malicioso.</p>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <div class="vt-badge flex items-center gap-2 text-xs text-text2"><div class="w-1.5 h-1.5 rounded-full bg-green"></div>100% Código Aberto</div>
+            <div class="vt-badge flex items-center gap-2 text-xs text-text2"><div class="w-1.5 h-1.5 rounded-full bg-green"></div>SHA-256 Verificado</div>
+            <div class="vt-badge flex items-center gap-2 text-xs text-text2"><div class="w-1.5 h-1.5 rounded-full bg-green"></div>Sem Telemetria</div>
+            <div class="vt-badge flex items-center gap-2 text-xs text-text2"><div class="w-1.5 h-1.5 rounded-full bg-green"></div>Sem Backdoor</div>
+          </div>
+          <div class="vt-hash text-xs text-text3 font-mono bg-bg3 rounded-lg px-3 py-2">SHA-256: 89a0b2aa212380f906af3d42bace1bc0aa9acdb156624844848695b950127337</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENCHMARKS ============ -->
+<section id="benchmarks-section" class="py-24 md:py-32 relative z-10 overflow-hidden bg-black/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+    <div class="text-center mb-16 reveal-on-scroll">
+      <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="benchmark.title">Benchmarks de Desempenho</h2>
+      <p class="text-kt-300 max-w-2xl mx-auto" data-i18n="benchmark.subtitle">
+        Comparação real de desempenho entre o <strong>Windows padrão (sem otimizações)</strong> e o
+        <strong>Windows otimizado com KT Supreme V2</strong>.
+      </p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-2 mb-12 reveal-on-scroll">
+      <button class="benchmark-tab btab active px-6 py-3 rounded-full bg-electric/20 text-electric-400 border border-electric/50 hover:bg-electric/30 transition-all font-medium text-sm data-[target=b-sys]:bg-electric data-[target=b-sys]:text-white data-[target=b-sys]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-sys">Task Manager & Specs</button>
+      <button class="benchmark-tab btab px-6 py-3 rounded-full bg-white/5 text-kt-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=b-cpu]:bg-electric data-[target=b-cpu]:text-white data-[target=b-cpu]:border-electric/50 data-[target=b-cpu]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-cpu">CPU-Z</button>
+      <button class="benchmark-tab btab px-6 py-3 rounded-full bg-white/5 text-kt-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=b-geek]:bg-electric data-[target=b-geek]:text-white data-[target=b-geek]:border-electric/50 data-[target=b-geek]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-geek">Geekbench</button>
+      <button class="benchmark-tab btab px-6 py-3 rounded-full bg-white/5 text-kt-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=b-lat]:bg-electric data-[target=b-lat]:text-white data-[target=b-lat]:border-electric/50 data-[target=b-lat]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-lat">LatencyMon</button>
+      <button class="benchmark-tab btab px-6 py-3 rounded-full bg-white/5 text-kt-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=b-mc]:bg-electric data-[target=b-mc]:text-white data-[target=b-mc]:border-electric/50 data-[target=b-mc]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-mc">Minecraft</button>
+      <button class="benchmark-tab btab px-6 py-3 rounded-full bg-white/5 text-kt-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=b-furmark]:bg-electric data-[target=b-furmark]:text-white data-[target=b-furmark]:border-electric/50 data-[target=b-furmark]:shadow-[0_0_20px_rgba(124,58,237,0.5)]" data-target="b-furmark">Furmark</button>
+    </div>
+    <div class="benchmark-contents relative bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 reveal-on-scroll">
+      <div id="b-sys" class="benchmark-panel active animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container" id="slider-sys-before">
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager CPU before.PNG')"><img src="task manager CPU before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU Before"></div>
+              </div>
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager RAM before.PNG')"><img src="task manager RAM before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM Before"></div>
+              </div>
+              <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-before', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+              <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-before', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots"><span class="w-2 h-2 rounded-full bg-white opacity-100"></span><span class="w-2 h-2 rounded-full bg-white opacity-30"></span></div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric/10 overflow-hidden relative group slider-container" id="slider-sys-after">
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task cpu tweaked.PNG')"><img src="task cpu tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU After"></div>
+              </div>
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('ram task tweaked.PNG')"><img src="ram task tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM After"></div>
+              </div>
+              <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-after', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+              <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-after', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots"><span class="w-2 h-2 rounded-full bg-electric-400 opacity-100"></span><span class="w-2 h-2 rounded-full bg-electric-400 opacity-30"></span></div>
+            </div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Uso da CPU</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">4%</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-2xl font-bold text-green-500">0%</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Uso da RAM</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">3.8 GB</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-2xl font-bold text-green-500">2.5 GB</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Processos Ativos</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">152</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-2xl font-bold text-green-500">56</span></div></div>
+          </div>
+          <div class="lg:col-span-2 mt-2 bg-white/5 border border-white/10 p-6 rounded-2xl text-center">
+            <h4 class="text-kt-300 text-sm uppercase tracking-widest mb-4 font-bold">Teste de Hardware</h4>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-electric-400 font-mono text-sm md:text-base">
+              <div class="bg-black/30 px-6 py-3 rounded-lg border border-electric/20 whitespace-nowrap flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> Ryzen 5 5600</div>
+              <div class="bg-black/30 px-6 py-3 rounded-lg border border-electric/20 whitespace-nowrap flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> RTX 4060 Ti</div>
+              <div class="bg-black/30 px-6 py-3 rounded-lg border border-electric/20 whitespace-nowrap flex items-center gap-2"><i data-lucide="memory-stick" class="w-4 h-4"></i> 16GB RAM 3600 MT/s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2: CPU-Z -->
+      <div id="b-cpu" class="benchmark-panel hidden animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z before.PNG')"><img src="cpu z before.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z Before"></div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z after.PNG')"><img src="cpu z after.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z After"></div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Single Thread</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">560.4 pts</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">603.4 pts</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Multi Thread</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">3889.6 pts</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">4813.8 pts</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3: Geekbench -->
+      <div id="b-geek" class="benchmark-panel hidden animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container" id="slider-geek-before">
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu before.PNG')"><img src="cpu before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU Before"></div>
+              </div>
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench before.PNG')"><img src="gpu bench before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU Before"></div>
+              </div>
+              <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-before', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+              <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-before', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots"><span class="w-2 h-2 rounded-full bg-white opacity-100"></span><span class="w-2 h-2 rounded-full bg-white opacity-30"></span></div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric/10 overflow-hidden relative group slider-container" id="slider-geek-after">
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu after.PNG')"><img src="cpu after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU After"></div>
+              </div>
+              <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench after.PNG')"><img src="gpu bench after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU After"></div>
+              </div>
+              <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-after', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+              <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-after', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots"><span class="w-2 h-2 rounded-full bg-electric-400 opacity-100"></span><span class="w-2 h-2 rounded-full bg-electric-400 opacity-30"></span></div>
+            </div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Geekbench CPU</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">3699 pts</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">6294 pts</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Geekbench GPU (OpenCL)</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">126938 pts</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">153829 pts</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: LatencyMon -->
+      <div id="b-lat" class="benchmark-panel hidden animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('latency moon before.PNG')"><img src="latency moon before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Latency Before"></div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('latency oon after.png')"><img src="latency oon after.png" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Latency After"></div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center flex flex-col items-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">DPC Routine Execution Time</div><div class="flex items-center gap-2"><span class="text-xl text-red-500">231.3 &micro;s</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">81.8 &micro;s</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center flex flex-col items-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Driver Latency</div><div class="flex items-center gap-2"><span class="text-xl text-red-500">120.3 &micro;s</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">55.1 &micro;s</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: Minecraft -->
+      <div id="b-mc" class="benchmark-panel hidden animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('minecraft before.png')"><img src="minecraft before.png" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Minecraft Before"></div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('minecraft after.png')"><img src="minecraft after.png" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Minecraft After"></div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">FPS Médio</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">483 FPS</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">932 FPS</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">1% Low FPS</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">283 FPS</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">711 FPS</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6: Furmark -->
+      <div id="b-furmark" class="benchmark-panel hidden animate-fade-in text-left">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('furmark before.PNG')"><img src="furmark before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Furmark Before"></div>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('furkmark after.PNG')"><img src="furkmark after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Furmark After"></div>
+          </div>
+          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Furmark Score</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">4605</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">7379</span></div></div>
+            <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Furmark FPS</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">76 FPS</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">123 FPS</span></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ TECHNICAL CHANGELOG ============ -->
+<section id="changelog-section" class="py-24 md:py-32 reveal-on-scroll">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="s-label">Otimização Profunda</div>
+      <h2 class="s-title" data-i18n="changelog.title">Technical Changelog</h2>
+      <div class="divider-line mx-auto"></div>
+      <p class="text-text2 max-w-lg mx-auto mt-4" data-i18n="changelog.subtitle">KT Supreme V2 - Build Técnica</p>
+    </div>
+    <div id="changelog-items-container">
+      <!-- Injetado via script.js -->
+      <div class="flex items-center justify-center h-40 text-text3">
+        <i data-lucide="loader" class="w-6 h-6 animate-spin mr-3"></i>
+        Carregando changelog...
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOWNLOAD ============ -->
+<section id="download" class="py-24 md:py-32 relative z-10 reveal-on-scroll">
+  <div class="container text-center">
+    <div class="inline-flex items-center gap-2 bg-electric/10 border border-electric/25 text-electric text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+      <span class="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></span>
+      Novidades — KT Supreme V2
+    </div>
+    <h2 class="s-title text-4xl md:text-6xl mb-4">Pronto para Otimizar?</h2>
+    <p class="text-text2 max-w-lg mx-auto mb-8 text-base leading-relaxed">Baixe agora o KT Optimizer e experimente a diferença do desempenho real mensurável. Gratuito, código aberto, sem cadastro.</p>
+    <div class="flex gap-4 justify-center flex-wrap mb-6">
+      <a href="https://ik.imagekit.io/gc3sslajp/KT OptimizerOptimizer.8.5V.bat" target="_blank" class="btn btn-primary text-base px-8 py-3.5">⬇ Baixar KT Optimizer Grátis</a>
+      
+    </div>
+    <div class="flex gap-6 justify-center text-text3 text-sm flex-wrap">
+      <span>✓ Gratuito para sempre</span>
+      <span>✓ Código aberto</span>
+      <span>✓ Sem cadastro</span>
+      <span>✓ Sem anúncios</span>
+      <span>✓ Sem telemetria</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARA QUEM ============ -->
+<section id="target-section" class="py-24 md:py-32 reveal-on-scroll">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="s-label">Público Alvo</div>
+      <h2 class="s-title" data-i18n="target.title">Para quem é pensado</h2>
+      <div class="divider-line mx-auto"></div>
+      <p class="text-text2 max-w-lg mx-auto mt-4" data-i18n="target.subtitle">Arquitetura de elite para quem não aceita compromissos com a latência.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="target-items-container">
+      <!-- Injetado via script.js -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ GUIA ============ -->
+<section id="steps-section" class="py-24 md:py-32  reveal-on-scroll">
+  <div class="container">
+    <div class="text-center mb-12">
+      <div class="s-label">Instalação</div>
+      <h2 class="s-title" data-i18n="steps.title">Download &amp; Avío</h2>
+      <div class="divider-line mx-auto"></div>
+      <p class="text-text2 max-w-lg mx-auto mt-4" data-i18n="steps.subtitle">Perfeição a poucos cliques de distância. Siga o procedimento rápido para desbloquear o potencial do seu PC.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+      <div class="image-zoom-trigger rounded-2xl overflow-hidden border border-border cursor-zoom-in">
+        <img src="tutoria.PNG" alt="Tutorial KT Optimizer" class="w-full object-cover">
+      </div>
+      <div>
+        <div class="security-box mb-6 p-5 bg-black/40 border border-border2 rounded-xl">
+          <h4 class="text-white font-bold mb-3 flex items-center gap-2">🛡️ Protocolo de Segurança</h4>
+          <div class="space-y-2">
+            <div class="sec-item flex items-center gap-2 text-sm text-text2"><span class="text-green">✓</span> Ponto de restauração efetuado</div>
+            <div class="sec-item flex items-center gap-2 text-sm text-text2"><span class="text-green">✓</span> Modificações seguras e testadas</div>
+            <div class="sec-item flex items-center gap-2 text-sm text-text2"><span class="text-green">✓</span> Rollback completo garantido</div>
+            <div class="sec-item flex items-center gap-2 text-sm text-text2"><span class="text-green">✓</span> Código 100% auditável</div>
+          </div>
+        </div>
+        <div class="steps-grid" id="steps-list">
+          <!-- Injetado via script.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq-section" class="py-24 md:py-32 reveal-on-scroll">
+  <div class="container max-w-3xl">
+    <div class="text-center mb-12">
+      <div class="s-label">FAQ</div>
+      <h2 class="s-title" data-i18n="faq.title">FAQ Técnica</h2>
+      <div class="divider-line mx-auto"></div>
+      <p class="text-text2 mt-4" data-i18n="faq.subtitle">Respostas às perguntas mais comuns sobre otimização</p>
+    </div>
+    <div class="space-y-3" id="faq-list">
+      <!-- Injetado via script.js -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-border py-12">
+  <div class="container">
+    <div class="footer-inner grid md:grid-cols-3 gap-10">
+      <div class="footer-brand">
+        <div class="flex items-center gap-2 mb-3">
+          <img src="logo.png" alt="Logo" class="w-8 h-8 rounded-md">
+          <span class="font-bold text-white">KT Optimizer<em class="not-italic text-green">+</em> Optimizer</span>
+        </div>
+        <p class="text-text3 text-sm leading-relaxed mb-4">Projeto avançado de otimização de kernel e sistema para Windows. Código aberto, gratuito e desenvolvido pela comunidade.</p>
+        <div class="flex gap-3 flex-wrap">
+          
+          
+          <a href="mailto:KT Optimizeroptimizerhelp@gmail.com" class="btn btn-outline text-xs px-3 py-1.5">✉ Email</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="text-white font-bold mb-4 text-sm">Navegação</h4>
+        <ul class="space-y-2">
+          <li><button onclick="scrollToSection('hero-section')" class="text-text3 text-sm hover:text-electric transition-colors">Início</button></li>
+          <li><button onclick="scrollToSection('about-section')" class="text-text3 text-sm hover:text-electric transition-colors">O que é</button></li>
+          <li><button onclick="scrollToSection('benchmarks-section')" class="text-text3 text-sm hover:text-electric transition-colors">Benchmark</button></li>
+          <li><button onclick="scrollToSection('virustotal-section')" class="text-text3 text-sm hover:text-electric transition-colors">VirusTotal</button></li>
+          <li><button onclick="scrollToSection('changelog-section')" class="text-text3 text-sm hover:text-electric transition-colors">Novidades</button></li>
+          <li><button onclick="scrollToSection('steps-section')" class="text-text3 text-sm hover:text-electric transition-colors">Guia</button></li>
+          <li><button onclick="scrollToSection('faq-section')" class="text-text3 text-sm hover:text-electric transition-colors">FAQ</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="text-white font-bold mb-4 text-sm" data-i18n="footer.creators">Criadores</h4>
+        <ul class="space-y-2 mb-6">
+          <li>
+            <a href="https://github.com/kelvenapk" target="_blank" class="text-text3 text-sm hover:text-electric transition-colors flex items-center gap-2">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              kelvenapk (Dev Principal)
+            </a>
+          </li>
+        </ul>
+        <h4 class="text-white font-bold mb-3 text-sm" data-i18n="footer.support">Suporte &amp; Comunidade</h4>
+        <ul class="space-y-2">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li><button id="btn-privacy" onclick="openModal('privacy')" class="text-text3 text-sm hover:text-electric" data-i18n="footer.privacy">Política de Privacidade</button></li>
+          <li><button id="btn-disclaimer" onclick="openModal('disclaimer')" class="text-text3 text-sm hover:text-electric" data-i18n="footer.legalDisclaimer">Aviso Legal</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-border mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-text3 text-xs">
+      <div data-i18n="footer.copyright">© 2026 KT OPTIMIZER. Todos os direitos reservados.</div>
+      <div id="visitor-counter" class="relative group cursor-default">
+        <!-- Interactive Glow Blur for visitors -->
+        <div class="absolute inset-0 bg-[#7C3AED]/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="relative flex items-center gap-3 bg-[#070114]/60 backdrop-blur-2xl border border-white/10 rounded-3xl px-6 py-3 shadow-[0_0_20px_rgba(124,58,237,0.1)] transition-all group-hover:border-[#7C3AED]/50">
+          <span class="w-3 h-3 rounded-full bg-[#1F6FFF] shadow-[0_0_10px_#1F6FFF] animate-pulse"></span>
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-[10px] font-bold tracking-[0.1em] text-kt-300 uppercase leading-none" data-i18n="footer.visitorsLabel">Visitors</span>
+            <span id="visit-count" class="font-mono font-bold text-white text-xl tracking-widest leading-none">0038085</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="btt" onclick="scrollToSection('hero-section')" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-electric text-white flex items-center justify-center shadow-lg opacity-0 pointer-events-none transition-all duration-300 hover:scale-110" aria-label="Voltar ao topo">
+  <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
+
+<!-- Progress bar -->
+<div id="prog" class="fixed top-0 left-0 right-0 h-0.5 bg-electric z-[99999] transition-all will-change-transform" style="width:0%"></div>
+
+<script>
+// ── COMPLEMENTARY SCRIPTS (overrides and additions) ──
+
+// Fix: progress bar and back-to-top on scroll
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const totalHeight = document.body.scrollHeight - window.innerHeight;
+  const prog = document.getElementById('prog');
+  const btt = document.getElementById('btt');
+  const nav = document.getElementById('navbar');
+  if (prog) prog.style.width = (scrolled / totalHeight * 100) + '%';
+  if (btt) {
+    if (scrolled > 400) { btt.style.opacity = '1'; btt.style.pointerEvents = 'auto'; }
+    else { btt.style.opacity = '0'; btt.style.pointerEvents = 'none'; }
+  }
+  if (nav) nav.classList.toggle('scrolled', scrolled > 50);
+});
+
+// Fix: lang-selector hover
+document.querySelectorAll('.lang-selector').forEach(ls => {
+  ls.addEventListener('click', () => ls.classList.toggle('open'));
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.lang-selector')) {
+    document.querySelectorAll('.lang-selector').forEach(ls => ls.classList.remove('open'));
+  }
+});
+
+// Fix: bench tabs
+document.querySelectorAll('.btab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.btab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.benchmark-panel').forEach(p => p.classList.add('hidden'));
+    tab.classList.add('active');
+    const panel = document.getElementById(tab.dataset.target);
+    if (panel) { panel.classList.remove('hidden'); }
+  });
+});
+
+// Fix: image-zoom-trigger fallback (in case script.js doesn't set it up)
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.image-zoom-trigger').forEach(trigger => {
+      if (!trigger._zoomBound) {
+        trigger.addEventListener('click', () => {
+          const img = trigger.querySelector('img');
+          if (img && window.openLightbox) openLightbox(img.src, trigger);
+        });
+        trigger._zoomBound = true;
+      }
+    });
+  }, 1500);
+});
+</script>
+
+<script src="script.js" defer></script>
+<script src="performance-optimizations.js"></script>
+
+<!-- Service Worker Registration -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ Service Worker registrado'))
+            .catch(err => console.log('Service Worker:', err));
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Platinum+ Optimizer - Real Optimization</title>
+  <link rel="icon" href="image/ico/logo_rounded.png">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <!-- Three.js for 3D Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+
+  <!-- Google Fonts -->
+  <!-- Performance Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Anti-Flash of Unstyled Content -->
+  <style>
+    html {
+      visibility: hidden;
+      opacity: 0;
+    }
+  </style>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            platinum: {
+              900: '#0B1C2D',
+              950: '#050a0f',
+              800: '#13283E',
+              50: '#F5F7FA',
+              300: '#BFC7D5',
+            },
+            electric: {
+              500: '#1F6FFF',
+              400: '#4dabff',
+              600: '#165bc0',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          backgroundImage: {
+            'hero-pattern': "radial-gradient(circle at 50% 0%, rgba(31, 111, 255, 0.08) 0%, rgba(11, 28, 45, 0) 50%)",
+          },
+          boxShadow: {
+            'glow': '0 0 20px -5px rgba(31, 111, 255, 0.5)',
+            'card': '0 10px 40px -10px rgba(0,0,0,0.5)',
+            'strong-glow': '0 0 30px -5px rgba(31, 111, 255, 0.7)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-platinum-950 text-platinum-50 antialiased font-sans overflow-x-hidden">
+
+  <!-- Page Transition Overlay -->
+  <div id="page-transition" class="page-transition-overlay">
+    <div class="transition-content flex flex-col items-center gap-16">
+      <div class="main-logo-wrapper relative scale-90 md:scale-100">
+        <img src="image/platinum-mode.jpg" alt="Loading..."
+          class="transition-logo blend-screen rounded-[2.5rem] shadow-[0_0_100px_rgba(249,115,22,0.6)] border border-orange-500/20"
+          draggable="false" oncontextmenu="return false">
+        <!-- GPU Fan Overlay - Smaller and Rounder -->
+        <div class="gpu-fan-container absolute -bottom-6 -right-6 w-24 h-24 md:w-32 md:h-32 z-20">
+          <img src="image/gpu-fan.png" alt="GPU Fan"
+            class="gpu-fan-img w-full h-full object-cover rounded-full filter drop-shadow-2xl border-2 border-white/5">
+        </div>
+      </div>
+      <div class="loading-status text-center">
+        <div class="status-text font-serif text-2xl md:text-3xl tracking-[0.2em] uppercase text-red-500 mb-4"
+          data-i18n="platinum.pageTransitionText">
+          Modalità Benchmark estrema attiva.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome Popup -->
+  <div id="modal-welcome" class="fixed inset-0 z-[150] flex items-center justify-center p-4 hidden">
+    <div class="modal-backdrop" onclick="closeModal('welcome')"></div>
+    <div
+      class="relative liquid-glass-modal w-full max-w-md flex flex-col items-center justify-center rounded-[3rem] shadow-[0_0_100px_rgba(31,111,255,0.2)] border border-white/10 bg-[#0B1C2D] p-10 gap-8 transform transition-all scale-95 opacity-0"
+      id="welcome-modal-content">
+
+      <button onclick="closeModal('welcome')"
+        class="absolute top-6 right-6 p-2 text-platinum-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">
+        <i data-lucide="x" class="w-5 h-5 group-hover:rotate-90 transition-transform"></i>
+      </button>
+
+      <div class="relative group">
+        <div
+          class="absolute -inset-4 bg-electric-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+        </div>
+        <img src="image/logo.jpg" alt="Platinum Logo"
+          class="w-24 h-24 rounded-2xl blend-screen shadow-glow relative z-10 animate-float" draggable="false"
+          oncontextmenu="return false">
+      </div>
+
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-serif font-bold text-white tracking-tight" data-i18n="welcome.title">Windows 8.5 Beta
+          V2 Released!</h2>
+        <p class="text-platinum-300 font-light" data-i18n="welcome.subtitle">The wait is over. Windows 8.5 Beta V2 is
+          now available with extreme advanced kernel optimizations specifically for AMD CPUs and GPUs. Download it now!
+        </p>
+      </div>
+
+      <div class="flex flex-col w-full gap-4">
+        <a href="javascript:void(0)" onclick="scrollToSection('hero-section'); closeModal('welcome')"
+          class="w-full py-5 bg-gradient-to-r from-electric-500 to-electric-600 text-white rounded-2xl flex items-center justify-center gap-3 font-bold tracking-widest uppercase text-xs hover:from-electric-400 hover:to-electric-500 hover:scale-[1.02] active:scale-95 transition-all shadow-strong-glow group">
+          <i data-lucide="download" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+          <span data-i18n="welcome.btnDownload">SCARICA NEL SITO</span>
+        </a>
+
+        <a href="https://t.me/+AKZO7Y5buhw0ZjRk" target="_blank" onclick="closeModal('welcome')"
+          class="w-full py-4 bg-white/5 border border-white/10 text-white/70 hover:text-white rounded-2xl flex items-center justify-center gap-3 font-bold tracking-widest uppercase text-[10px] hover:bg-white/10 transition-all group">
+          <i data-lucide="send"
+            class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-electric-400"></i>
+          <span data-i18n="welcome.btnTelegram">ENTRA SU TELEGRAM</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div id="modal-privacy" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="modal-backdrop" onclick="closeModal('privacy')"></div>
+    <div
+      class="relative liquid-glass-modal modal-privacy-style w-full max-w-4xl max-h-[90vh] flex flex-col rounded-3xl shadow-2xl border-platinum-800/50">
+      <div class="flex items-center justify-between p-8 border-b border-white/5">
+        <h2 class="text-3xl font-serif font-bold tracking-tight text-white" data-i18n="footer.privacy">Privacy
+          Policy</h2>
+        <button onclick="closeModal('privacy')"
+          class="p-2 text-platinum-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="overflow-y-auto p-8 md:p-12 space-y-6 text-platinum-300 font-light leading-relaxed"
+        id="modal-content-privacy">
+        <!-- Content injected by JS -->
+      </div>
+      <div class="p-8 border-t border-white/5 flex justify-end">
+        <button onclick="closeModal('privacy')"
+          class="px-8 py-3 bg-electric-500 text-white rounded-full hover:bg-electric-400 transition-all shadow-glow font-medium"
+          data-i18n="footer.closeBtn">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disclaimer Modal -->
+  <div id="modal-disclaimer" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="modal-backdrop" onclick="closeModal('disclaimer')"></div>
+    <div
+      class="relative liquid-glass-modal modal-disclaimer-style w-full max-w-4xl max-h-[90vh] flex flex-col rounded-3xl shadow-2xl border-platinum-800/50">
+      <div class="flex items-center justify-between p-8 border-b border-white/5">
+        <h2 class="text-3xl font-serif font-bold tracking-tight text-white" data-i18n="footer.legalDisclaimer">
+          Disclaimer</h2>
+        <button onclick="closeModal('disclaimer')"
+          class="p-2 text-platinum-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div
+        class="overflow-y-auto p-8 md:p-12 space-y-6 text-platinum-300 font-light leading-relaxed whitespace-pre-line"
+        id="modal-content-disclaimer">
+        <!-- Content injected by JS -->
+      </div>
+      <div class="p-8 border-t border-white/5 flex justify-end">
+        <button onclick="closeModal('disclaimer')"
+          class="px-8 py-3 bg-electric-500 text-white rounded-full hover:bg-electric-400 transition-all shadow-glow font-medium"
+          data-i18n="footer.closeBtn">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="modal-lightbox"
+    class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-12 hidden opacity-0 transition-opacity duration-500 cursor-pointer"
+    onclick="closeLightbox()">
+    <div class="modal-backdrop"></div>
+    <div class="relative w-full h-full flex items-center justify-center p-4">
+      <button onclick="event.stopPropagation(); closeLightbox();"
+        class="absolute top-0 right-0 m-4 md:m-8 p-3 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all z-[210]">
+        <i data-lucide="x" class="w-8 h-8"></i>
+      </button>
+      <img id="lightbox-img" src="" alt="Zoomed Image" onclick="event.stopPropagation()"
+        class="max-w-full max-h-full object-contain rounded-2xl shadow-[0_0_100px_rgba(31,111,255,0.2)] transform scale-90 transition-transform duration-500 ease-out cursor-default pointer-events-auto">
+    </div>
+  </div>
+
+
+
+
+  <!-- Floating Navigation -->
+  <nav id="navbar" class="fixed top-6 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-[95%] mx-auto px-4 md:px-6">
+      <div
+        class="liquid-glass border border-white/5 rounded-full px-8 py-4 flex items-center justify-between shadow-lg">
+        <div
+          class="text-xl md:text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-4 shrink-0">
+          <img src="image/logo.jpg" alt="Platinum+ Logo" loading="eager" decoding="async"
+            class="h-10 w-10 object-contain blend-screen rounded-2xl" draggable="false" oncontextmenu="return false" />
+          <span class="whitespace-nowrap">Platinum+ Optimizer</span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div id="nav-menu-container"
+          class="hidden md:flex items-center space-x-1 text-sm font-medium text-platinum-300 relative px-1 py-1">
+          <!-- Dynamic Liquid Blob -->
+          <div id="nav-blob" class="absolute pointer-events-none opacity-0 scale-75 transition-all duration-500 z-0">
+          </div>
+          <button onclick="scrollToSection('hero-section')"
+            class="px-4 py-2 rounded-full hover:text-white transition-all" data-i18n="nav.home">Home</button>
+          <button onclick="scrollToSection('features')" class="px-4 py-2 rounded-full hover:text-white transition-all"
+            data-i18n="nav.about">What is</button>
+          <button onclick="scrollToSection('virustotal')" class="px-4 py-2 rounded-full hover:text-white transition-all"
+            data-i18n="nav.virustotal">VirusTotal</button>
+          <button onclick="scrollToSection('benchmark')"
+            class="px-4 py-2 rounded-full hover:text-white transition-all text-electric-400 font-bold"
+            data-i18n="nav.benchmark">Benchmark</button>
+          <button onclick="scrollToSection('changelog')" class="px-4 py-2 rounded-full hover:text-white transition-all"
+            data-i18n="nav.changelog">What's New</button>
+          <button onclick="scrollToSection('target')"
+            class="px-4 py-2 rounded-full hover:bg-white/5 hover:text-white transition-all" data-i18n="nav.target">For
+            Whom</button>
+          <button onclick="scrollToSection('activation')" class="px-4 py-2 rounded-full hover:text-white transition-all"
+            data-i18n="nav.howItWorks">Guide</button>
+          <button onclick="scrollToSection('faq')" class="px-4 py-2 rounded-full hover:text-white transition-all"
+            data-i18n="nav.faq">FAQ</button>
+          <a href="wallpaper.html" id="nav-wallpaper-btn"
+            class="px-4 py-2 rounded-full hover:text-white transition-all flex items-center gap-2 group/nav">
+            <span data-i18n="nav.wallpaper">Wallpaper</span>
+            <span class="px-1.5 py-0.5 bg-electric-500 text-[8px] font-bold rounded-md animate-pulse">NEW</span>
+          </a>
+
+          <div class="h-6 w-[1px] bg-white/10 mx-2"></div>
+
+          <!-- Language Selector -->
+          <div class="relative group">
+            <button
+              class="flex items-center space-x-2 text-platinum-300 hover:text-white transition-colors py-2 px-3 rounded-full hover:bg-white/5"
+              id="lang-btn">
+              <span class="text-lg" id="current-lang-flag">🇬🇧</span>
+              <span class="uppercase tracking-wide text-xs font-bold" id="current-lang-code">EN</span>
+              <i data-lucide="chevron-down" class="w-3 h-3 group-hover:rotate-180 transition-transform"></i>
+            </button>
+            <div
+              class="absolute right-0 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+              <div class="glass rounded-2xl shadow-xl overflow-hidden py-2 w-36 flex flex-col">
+                <button onclick="setLanguage('it')"
+                  class="flex items-center space-x-3 px-4 py-3 text-sm text-platinum-300 hover:bg-electric-500/10 hover:text-white transition-colors text-left w-full">
+                  <span>🇮🇹</span>
+                  <span>Italiano</span>
+                </button>
+                <button onclick="setLanguage('en')"
+                  class="flex items-center space-x-3 px-4 py-3 text-sm text-platinum-300 hover:bg-electric-500/10 hover:text-white transition-colors text-left w-full">
+                  <span>🇬🇧</span>
+                  <span>English</span>
+                </button>
+
+                <button onclick="setLanguage('ru')"
+                  class="flex items-center space-x-3 px-4 py-3 text-sm text-platinum-300 hover:bg-electric-500/10 hover:text-white transition-colors text-left w-full">
+                  <span>🇷🇺</span>
+                  <span>Русский</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side Actions -->
+        <div class="hidden md:flex items-center gap-4">
+          <!-- Platinum Switch Integrated (Desktop) -->
+          <div class="platinum-switch-container" id="platinum-bench-btn">
+            <label class="platinum-switch">
+              <input type="checkbox" id="platinum-mode-trigger">
+              <span class="platinum-slider">
+                <span class="platinum-label text-center px-4 w-full">Platinum Bench Mode</span>
+                <span class="flame-container">
+                  <span class="flame"></span>
+                  <span class="flame"></span>
+                  <span class="flame"></span>
+                </span>
+              </span>
+            </label>
+          </div>
+
+          <!-- Platinum+ Android Button -->
+          <a href="platinum-android.html"
+            class="android-btn-nav w-[190px] h-[48px] rounded-full justify-center text-[10px] md:text-xs uppercase font-bold tracking-wider px-3 py-2 flex items-center gap-1 group">
+            <i data-lucide="smartphone" class="w-3 h-3 group-hover:text-[#00ffd5] transition-colors"></i>
+            Platinum+ Android
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button Area -->
+        <div class="flex items-center gap-4">
+          <div class="md:hidden platinum-switch-container scale-75 origin-right" id="platinum-bench-btn-mobile">
+            <label class="platinum-switch">
+              <input type="checkbox" id="platinum-mode-trigger-mobile">
+              <span class="platinum-slider">
+                <span class="platinum-label text-center">Platinum Bench</span>
+                <span class="flame-container">
+                  <span class="flame"></span>
+                  <span class="flame"></span>
+                  <span class="flame"></span>
+                </span>
+              </span>
+            </label>
+          </div>
+          <button class="md:hidden text-white p-2 rounded-full hover:bg-white/10" onclick="toggleMobileMenu()">
+            <i data-lucide="menu" id="mobile-menu-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu"
+      class="hidden md:hidden absolute top-full left-4 right-4 mt-2 glass rounded-3xl p-6 flex-col space-y-2 shadow-2xl backdrop-blur-xl">
+      <button onclick="scrollToSection('hero-section')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.home">Home</button>
+      <button onclick="scrollToSection('features')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.about">What is</button>
+      <button onclick="scrollToSection('virustotal')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.virustotal">VirusTotal</button>
+      <button onclick="scrollToSection('benchmark')"
+        class="text-left px-4 py-3 rounded-xl text-electric-400 font-bold hover:text-electric-300 hover:bg-white/5 transition-colors"
+        data-i18n="nav.benchmark">Benchmark</button>
+      <button onclick="scrollToSection('changelog')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.changelog">What's New</button>
+      <button onclick="scrollToSection('target')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.target">For Whom</button>
+      <button onclick="scrollToSection('activation')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.howItWorks">Guide</button>
+      <button onclick="scrollToSection('faq')"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors"
+        data-i18n="nav.faq">FAQ</button>
+      <a href="wallpaper.html"
+        class="text-left px-4 py-3 rounded-xl text-platinum-300 hover:text-white hover:bg-white/5 transition-colors flex items-center justify-between">
+        <span data-i18n="nav.wallpaper">Wallpaper</span>
+        <span class="px-1.5 py-0.5 bg-electric-500 text-[8px] font-bold rounded-md animate-pulse">NEW</span>
+      </a>
+
+      <!-- Mobile Language Selector -->
+      <div class="flex gap-2 pt-4 border-t border-white/5 justify-center">
+        <button onclick="setLanguage('it')"
+          class="p-3 hover:bg-white/5 rounded-xl text-2xl transition-colors">🇮🇹</button>
+        <button onclick="setLanguage('en')"
+          class="p-3 hover:bg-white/5 rounded-xl text-2xl transition-colors">🇬🇧</button>
+
+        <button onclick="setLanguage('ru')"
+          class="p-3 hover:bg-white/5 rounded-xl text-2xl transition-colors">🇷🇺</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Global Animated Background -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-platinum-950">
+    <!-- Static Grid -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-20"></div>
+    <!-- Dynamic Canvas -->
+    <div id="global-animation-container" class="absolute inset-0"></div>
+    <!-- Global Gradient Overlay for depth -->
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-platinum-950/50 to-platinum-950/80"></div>
+  </div>
+
+  <!-- Hero Section (HOME) -->
+  <div id="hero-section" class="relative z-10 pt-40 pb-24 md:pt-56 md:pb-32 overflow-hidden px-4">
+    <div
+      class="absolute top-[30%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-electric-500/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen">
+    </div>
+
+    <div class="max-w-[1600px] mx-auto px-2 md:px-6 relative z-10 pointer-events-none">
+      <div class="pointer-events-auto grid grid-cols-1 lg:grid-cols-[2.4fr_1fr_2.4fr] gap-8 xl:gap-20 items-center">
+
+        <!-- Left Column (Console Interface) - PIÙ GRANDE -->
+        <div
+          class="order-2 lg:order-1 relative w-full mx-auto lg:max-w-none transform transition-all duration-700 lg:scale-110 xl:scale-125 animate-float">
+          <div class="text-center mb-6 text-electric-400 font-bold tracking-widest text-xs uppercase"
+            data-i18n="hero.imageLabelLeft"></div>
+          <div id="hero-left-trigger"
+            class="relative group overflow-hidden rounded-2xl modern-frame shadow-[0_0_60px_rgba(31,111,255,0.15)] group-hover:shadow-[0_0_100px_rgba(31,111,255,0.3)] transition-all duration-500 cursor-zoom-in"
+            onclick="openLightbox('image/platinum.PNG', this)">
+            <img src="image/platinum.PNG" alt="Platinum+ Optimizer Interface Left"
+              class="w-full h-auto object-contain blend-screen opacity-90 group-hover:opacity-100 transition-opacity duration-500 will-change-transform" />
+            <div class="absolute inset-0 bg-gradient-to-t from-electric-500/10 to-transparent pointer-events-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Column -->
+        <div class="order-1 lg:order-2 text-center">
+          <div class="mb-10 flex justify-center reveal-on-scroll">
+            <img src="image/logo.jpg" alt="Platinum+ Logo"
+              class="w-32 h-32 relative z-10 drop-shadow-[0_0_25px_rgba(31,111,255,0.4)] rounded-[2rem] blend-screen animate-glow-blue"
+              draggable="false" oncontextmenu="return false">
+          </div>
+          <h1
+            class="font-serif text-5xl sm:text-6xl md:text-6xl xl:text-8xl font-bold leading-tight mb-8 text-white tracking-tight drop-shadow-2xl reveal-on-scroll"
+            data-i18n="hero.headline"></h1>
+          <p class="text-lg md:text-xl text-platinum-300 mb-10 leading-relaxed font-light max-w-lg mx-auto reveal-on-scroll reveal-delay-200"
+            data-i18n="hero.subheadline"></p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal-on-scroll reveal-delay-300">
+            <button onclick="handleDownload()"
+              class="w-full sm:w-auto shadow-strong-glow inline-flex items-center justify-center px-12 py-5 text-lg font-medium rounded-full transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-electric-500/20 bg-gradient-to-r from-electric-500 to-electric-600 text-white hover:from-electric-400 hover:to-electric-500 hover:scale-105 active:scale-95 group">
+              <i data-lucide="download" class="mr-3 w-6 h-6 group-hover:animate-bounce"></i>
+              <span data-i18n="hero.ctaDownloadExe">Download Platinum+ Optimizer</span>
+            </button>
+          </div>
+          <div class="mt-12 flex justify-center reveal-on-scroll reveal-delay-400">
+            <button onclick="scrollToSection('features')"
+              class="text-platinum-300 hover:text-white text-sm flex items-center gap-2 transition-colors px-6 py-2 rounded-full hover:bg-white/5">
+              <span data-i18n="hero.ctaLearn">How it works</span>
+              <i data-lucide="arrow-down" class="w-4 h-4 animate-bounce"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column (Task Manager Graph) - PIÙ GRANDE -->
+        <div
+          class="order-3 lg:order-3 relative w-full mx-auto lg:max-w-none transform transition-all duration-700 lg:scale-110 xl:scale-125 animate-float-delayed">
+          <div class="text-center mb-6 text-electric-400 font-bold tracking-widest text-xs uppercase"
+            data-i18n="hero.imageLabelRight"></div>
+          <div id="hero-right-trigger"
+            class="relative group rounded-[2rem] overflow-hidden glass modern-frame border border-electric-500/20 shadow-[0_0_60px_rgba(31,111,255,0.15)] group-hover:shadow-[0_0_100px_rgba(31,111,255,0.3)] transition-all duration-500 cursor-zoom-in"
+            onclick="openLightbox('image/task.jpg', this)">
+            <img src="image/task.jpg" alt="Platinum+ Optimizer Interface Right" loading="eager" decoding="async"
+              class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity will-change-transform" />
+            <div class="absolute inset-0 bg-gradient-to-t from-electric-500/15 to-transparent pointer-events-none">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-platinum-950/0 to-platinum-950/0 pointer-events-none">
+    </div>
+  </div>
+
+  <!-- What is it (ABOUT) -->
+  <section id="features" class="py-24 md:py-32 relative z-10 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="grid md:grid-cols-12 gap-16 items-center">
+        <div class="md:col-span-5 relative scale-up-on-scroll">
+          <div class="absolute -inset-4 bg-electric-500/20 blur-2xl rounded-full"></div>
+          <div class="relative glass p-8 md:p-10 rounded-3xl shadow-2xl border border-electric-500/20">
+            <div class="space-y-5 font-mono text-sm text-platinum-300">
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.cpuFeature">CPU Performance Optimization</span>
+              </div>
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.gpuFeature">GPU Performance Optimization</span>
+              </div>
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.debloaterFeature">System Debloater</span>
+              </div>
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.servicesFeature">Services Optimizer</span>
+              </div>
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.networkFeature">Network Optimizer</span>
+              </div>
+              <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                <span class="text-electric-400 font-bold">&gt;</span> <span data-i18n="benchmark.metrics.ramFeature">RAM/Memory Optimizer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="md:col-span-7">
+          <h2 class="text-3xl md:text-5xl font-serif font-bold mb-8 text-white reveal-on-scroll"
+            data-i18n="about.title"></h2>
+          <div class="w-24 h-1.5 bg-electric-500 rounded-full mb-10 reveal-on-scroll reveal-delay-100"></div>
+          <p class="text-platinum-300 text-lg md:text-xl leading-relaxed mb-8 font-light reveal-on-scroll reveal-delay-200"
+            data-i18n="about.description1"></p>
+          <p class="text-platinum-300 text-lg md:text-xl leading-relaxed font-light reveal-on-scroll reveal-delay-300"
+            data-i18n="about.description2"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benchmark Section -->
+  <section id="benchmark" class="py-24 md:py-32 relative z-10 overflow-hidden bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="benchmark.title">Benchmark
+          delle Prestazioni</h2>
+        <p class="text-platinum-300 max-w-2xl mx-auto" data-i18n="benchmark.subtitle">
+          Confronto reale delle prestazioni tra <strong>Windows standard (senza ottimizzazioni)</strong> e
+          <strong>Windows ottimizzato con Platinum+ Optimizer 8.5 Beta V2</strong>.
+        </p>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12 reveal-on-scroll">
+        <button
+          class="benchmark-tab active px-6 py-3 rounded-full bg-electric-500/20 text-electric-400 border border-electric-500/50 hover:bg-electric-500/30 transition-all font-medium text-sm data-[target=sys]:bg-electric-500 data-[target=sys]:text-white data-[target=sys]:shadow-glow"
+          data-target="b-sys" data-i18n="benchmark.tabs.sys">Task Manager & Specs</button>
+        <button
+          class="benchmark-tab px-6 py-3 rounded-full bg-white/5 text-platinum-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=cpu]:bg-electric-500 data-[target=cpu]:text-white data-[target=cpu]:border-electric-500/50 data-[target=cpu]:shadow-glow"
+          data-target="b-cpu" data-i18n="benchmark.tabs.cpu">CPU-Z</button>
+        <button
+          class="benchmark-tab px-6 py-3 rounded-full bg-white/5 text-platinum-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=geek]:bg-electric-500 data-[target=geek]:text-white data-[target=geek]:border-electric-500/50 data-[target=geek]:shadow-glow"
+          data-target="b-geek" data-i18n="benchmark.tabs.geek">Geekbench</button>
+        <button
+          class="benchmark-tab px-6 py-3 rounded-full bg-white/5 text-platinum-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=lat]:bg-electric-500 data-[target=lat]:text-white data-[target=lat]:border-electric-500/50 data-[target=lat]:shadow-glow"
+          data-target="b-lat" data-i18n="benchmark.tabs.lat">LatencyMon</button>
+        <button
+          class="benchmark-tab px-6 py-3 rounded-full bg-white/5 text-platinum-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=mc]:bg-electric-500 data-[target=mc]:text-white data-[target=mc]:border-electric-500/50 data-[target=mc]:shadow-glow"
+          data-target="b-mc" data-i18n="benchmark.tabs.mc">Minecraft</button>
+        <button
+          class="benchmark-tab px-6 py-3 rounded-full bg-white/5 text-platinum-300 border border-white/10 hover:bg-white/10 transition-all font-medium text-sm data-[target=furmark]:bg-electric-500 data-[target=furmark]:text-white data-[target=furmark]:border-electric-500/50 data-[target=furmark]:shadow-glow"
+          data-target="b-furmark" data-i18n="benchmark.tabs.furmark">Furmark</button>
+      </div>
+
+      <!-- Tab Contents -->
+      <div
+        class="benchmark-contents relative bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 reveal-on-scroll">
+
+        <!-- 1: System -->
+        <div id="b-sys" class="benchmark-panel animate-fade-in active">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Prima -->
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div
+                class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container"
+                id="slider-sys-before">
+                <!-- Image 1 -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100"
+                  data-index="0">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/task manager CPU before.PNG', this)">
+                    <img src="image/benchmark/task manager CPU before.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="CPU Task Manager Before">
+                  </div>
+                </div>
+                <!-- Image 2 -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center"
+                  data-index="1">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/task manager RAM before.PNG', this)">
+                    <img src="image/benchmark/task manager RAM before.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="RAM Task Manager Before">
+                  </div>
+                </div>
+                <!-- Controls -->
+                <button
+                  class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-sys-before', -1)">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button
+                  class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-sys-before', 1)">
+                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+                <!-- Dots -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots">
+                  <span class="w-2 h-2 rounded-full bg-white opacity-100 transition-opacity"></span>
+                  <span class="w-2 h-2 rounded-full bg-white opacity-30 transition-opacity"></span>
+                </div>
+              </div>
+            </div>
+            <!-- Dopo -->
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div
+                class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric-900/10 overflow-hidden relative group slider-container"
+                id="slider-sys-after">
+                <!-- Image 1 -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100"
+                  data-index="0">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/task cpu tweaked.PNG', this)">
+                    <img src="image/benchmark/task cpu tweaked.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="CPU Task Manager After">
+                  </div>
+                </div>
+                <!-- Image 2 -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center"
+                  data-index="1">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/ram task tweaked.PNG', this)">
+                    <img src="image/benchmark/ram task tweaked.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="RAM Task Manager After">
+                  </div>
+                </div>
+                <!-- Controls -->
+                <button
+                  class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-sys-after', -1)">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button
+                  class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-sys-after', 1)">
+                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+                <!-- Dots -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots">
+                  <span class="w-2 h-2 rounded-full bg-electric-400 opacity-100 transition-opacity"></span>
+                  <span class="w-2 h-2 rounded-full bg-electric-400 opacity-30 transition-opacity"></span>
+                </div>
+              </div>
+            </div>
+            <!-- Metrics -->
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2" data-i18n="benchmark.metrics.cpu">
+                  Utilizzo CPU</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.cpuBefore">4%</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-2xl font-bold text-green-400" data-i18n="benchmark.metrics.cpuAfter">0%</span>
+                </div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2" data-i18n="benchmark.metrics.ram">
+                  Utilizzo RAM</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.ramBefore">3.8 GB</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-2xl font-bold text-green-400" data-i18n="benchmark.metrics.ramAfter">2.5 GB</span>
+                </div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.procs">Processi Attivi</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.procsBefore">152</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-2xl font-bold text-green-400" data-i18n="benchmark.metrics.procsAfter">56</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hardware Specs -->
+            <div class="lg:col-span-2 mt-2 bg-white/5 border border-white/10 p-6 rounded-2xl text-center">
+              <h4 class="text-platinum-300 text-sm uppercase tracking-widest mb-4 font-bold"
+                data-i18n="benchmark.hardwareTitle">Hardware Test</h4>
+              <div
+                class="flex flex-col md:flex-row justify-center items-center gap-4 text-electric-400 font-mono text-sm md:text-base">
+                <div
+                  class="bg-black/30 px-6 py-3 rounded-lg border border-electric-500/20 shadow-[0_0_15px_rgba(31,111,255,0.1)] whitespace-nowrap flex items-center gap-2">
+                  <i data-lucide="cpu" class="w-4 h-4"></i> Ryzen 5 5600
+                </div>
+                <div
+                  class="bg-black/30 px-6 py-3 rounded-lg border border-electric-500/20 shadow-[0_0_15px_rgba(31,111,255,0.1)] whitespace-nowrap flex items-center gap-2">
+                  <i data-lucide="monitor" class="w-4 h-4"></i> RTX 4060 Ti
+                </div>
+                <div
+                  class="bg-black/30 px-6 py-3 rounded-lg border border-electric-500/20 shadow-[0_0_15px_rgba(31,111,255,0.1)] whitespace-nowrap flex items-center gap-2">
+                  <i data-lucide="memory-stick" class="w-4 h-4"></i> 16GB RAM 3600 MT/s
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2: CPU-Z -->
+        <div id="b-cpu" class="benchmark-panel hidden animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden">
+                <img src="image/benchmark/cpu z before.PNG"
+                  class="w-full h-auto object-contain opacity-90" alt="CPU-Z Before">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden">
+                <img src="image/benchmark/cpu z after.PNG"
+                  class="w-full h-auto object-contain opacity-90" alt="CPU-Z After">
+              </div>
+            </div>
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2" data-i18n="benchmark.metrics.single">
+                  Single Thread</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.cpuZSingleBefore">560.4 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.cpuZSingleAfter">603.4 pts</span>
+                </div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2" data-i18n="benchmark.metrics.multi">
+                  Multi Thread</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.cpuZMultiBefore">3889.6 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.cpuZMultiAfter">4813.8 pts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3: Geekbench -->
+        <div id="b-geek" class="benchmark-panel hidden animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div
+                class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container"
+                id="slider-geek-before">
+                <!-- Image CPU -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100"
+                  data-index="0">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/cpu before.PNG', this)">
+                    <img src="image/benchmark/cpu before.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Geekbench CPU Before">
+                  </div>
+                </div>
+                <!-- Image GPU -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center"
+                  data-index="1">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/gpu bench before.PNG', this)">
+                    <img src="image/benchmark/gpu bench before.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Geekbench GPU Before">
+                  </div>
+                </div>
+                <!-- Controls -->
+                <button
+                  class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-geek-before', -1)">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button
+                  class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-geek-before', 1)">
+                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+                <!-- Dots -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots">
+                  <span class="w-2 h-2 rounded-full bg-white opacity-100 transition-opacity"></span>
+                  <span class="w-2 h-2 rounded-full bg-white opacity-30 transition-opacity"></span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div
+                class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric-900/10 overflow-hidden relative group slider-container"
+                id="slider-geek-after">
+                <!-- Image CPU -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100"
+                  data-index="0">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/cpu after.PNG', this)">
+                    <img src="image/benchmark/cpu after.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Geekbench CPU After">
+                  </div>
+                </div>
+                <!-- Image GPU -->
+                <div
+                  class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center"
+                  data-index="1">
+                  <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/gpu bench after.PNG', this)">
+                    <img src="image/benchmark/gpu bench after.PNG"
+                      class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Geekbench GPU After">
+                  </div>
+                </div>
+                <!-- Controls -->
+                <button
+                  class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-geek-after', -1)">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button
+                  class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onclick="moveBenchmarkSlider('slider-geek-after', 1)">
+                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+                <!-- Dots -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20 slider-dots">
+                  <span class="w-2 h-2 rounded-full bg-electric-400 opacity-100 transition-opacity"></span>
+                  <span class="w-2 h-2 rounded-full bg-electric-400 opacity-30 transition-opacity"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metrics CPU/GPU Combined -->
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2 flex justify-center gap-1 items-center w-full"
+                  data-i18n="benchmark.metrics.geekCpuTitle"><i data-lucide="cpu" class="w-4 h-4 text-electric-400"></i>
+                  Geekbench CPU Score</div>
+
+                <div class="mt-4 text-left text-[11px] text-white/50 mb-1 pl-2 uppercase tracking-wide" data-i18n="benchmark.metrics.single">Single Core</div>
+                <div class="flex items-center justify-center gap-3 mb-4">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.geekSingleBefore">476 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.geekSingleImp">1982
+                    pts</span>
+                </div>
+
+                <div class="text-left text-[11px] text-white/50 mb-1 pl-2 uppercase tracking-wide" data-i18n="benchmark.metrics.multi">Multi Core</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.geekMultiBefore">3699 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.geekMultiImp">6294
+                    pts</span>
+                </div>
+              </div>
+
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2 flex items-center justify-center gap-1 w-full"
+                  data-i18n="benchmark.metrics.geekGpuTitle"><i data-lucide="monitor"
+                    class="w-4 h-4 text-electric-400"></i> Geekbench GPU Score</div>
+
+                <div class="mt-4 text-left text-[11px] text-white/50 mb-1 pl-2 uppercase tracking-wide" data-i18n="benchmark.metrics.opencl">OpenCL</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.geekOpenClBefore">126938 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.geekOpenClImp">153829
+                    pts</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 4: LatencyMon -->
+        <div id="b-lat" class="benchmark-panel hidden animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/latency moon before.PNG', this)">
+                <img src="image/benchmark/latency moon before.PNG"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="LatencyMon Before">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/latency oon after.png', this)">
+                <img src="image/benchmark/latency oon after.png"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="LatencyMon After">
+              </div>
+            </div>
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5 flex flex-col items-center">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.latDpc">DPC Routine Execution Time</div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.latDpcBefore">231.3 &micro;s</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-2xl font-bold text-green-400" data-i18n="benchmark.metrics.latDpcAfter">81.8
+                    &micro;s</span>
+                </div>
+                <div class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded inline-block"
+                  data-i18n="benchmark.metrics.latDpcImp">-64.6% Latenza</div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5 flex flex-col items-center">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.latDrv">Driver Latency</div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.latDrvBefore">120.3 &micro;s</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-2xl font-bold text-green-400" data-i18n="benchmark.metrics.latDrvAfter">55.1
+                    &micro;s</span>
+                </div>
+                <div class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded inline-block"
+                  data-i18n="benchmark.metrics.latDrvImp">-54.2% Latenza</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5: Minecraft -->
+        <div id="b-mc" class="benchmark-panel hidden animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/minecraft before.png', this)">
+                <img src="image/benchmark/minecraft before.png"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Minecraft Before">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/minecraft after.png', this)">
+                <img src="image/benchmark/minecraft after.png"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Minecraft After">
+              </div>
+            </div>
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.mcAvg">FPS Medi</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.mcAvgBefore">483 FPS</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.mcAvgAfter">932
+                    FPS</span>
+                </div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.mcLow">1% Low FPS <span class="text-white/40 font-normal lowercase"
+                    data-i18n="benchmark.metrics.mcLowDesc">(Stabilità)</span></div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.mcLowBefore">283 FPS</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.mcLowAfter">711
+                    FPS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6: Furmark -->
+        <div id="b-furmark" class="benchmark-panel hidden animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-red-400 flex items-center justify-center gap-2"><i
+                  data-lucide="x-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.before">Prima (Standard)</span>
+              </h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/furmark before.PNG', this)">
+                <img src="image/benchmark/furmark before.PNG"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Furmark Before">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-bold text-green-400 flex items-center justify-center gap-2"><i
+                  data-lucide="check-circle" class="w-5 h-5"></i> <span data-i18n="benchmark.after">Dopo
+                  Platinum+</span></h3>
+              <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('image/benchmark/furkmark after.PNG', this)">
+                <img src="image/benchmark/furkmark after.PNG"
+                  class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" alt="Furmark After">
+              </div>
+            </div>
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.furmarkScore">Punteggio Furmark</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.furmarkScoreBefore">4605 pts</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.furmarkScoreAfter">7379 pts</span>
+                </div>
+              </div>
+              <div class="bg-black/40 p-5 rounded-2xl text-center border border-white/5">
+                <div class="text-platinum-400 text-xs tracking-wider uppercase mb-2"
+                  data-i18n="benchmark.metrics.furmarkFps">FPS Medi</div>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-xl text-red-400" data-i18n="benchmark.metrics.furmarkFpsBefore">76 FPS</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i>
+                  <span class="text-3xl font-bold text-green-400" data-i18n="benchmark.metrics.furmarkFpsAfter">123 FPS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Changelog (NEW CONTENT) -->
+  <section id="changelog" class="py-24 md:py-32 relative z-10 overflow-hidden bg-black/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="changelog.title"></h2>
+        <p class="text-electric-400 font-bold tracking-widest text-sm uppercase mb-4" data-i18n="changelog.subtitle">
+        </p>
+        <div class="w-24 h-1.5 bg-electric-500 rounded-full mx-auto"></div>
+      </div>
+      <div class="flex flex-col gap-12 scale-up-on-scroll" id="changelog-items-container"></div>
+    </div>
+  </section>
+
+  <!-- VirusTotal and Detections -->
+  <section id="virustotal" class="py-24 md:py-32 relative z-10 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="text-center mb-16 reveal-on-scroll">
+        <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="virustotal.title"></h2>
+        <p class="text-platinum-300 text-lg max-w-3xl mx-auto" data-i18n="virustotal.subtitle"></p>
+      </div>
+
+      <div class="glass p-8 md:p-12 rounded-3xl border border-electric-500/20 mb-12 scale-up-on-scroll">
+        <div class="grid md:grid-cols-3 gap-8 mb-10">
+          <div class="text-center p-6 bg-platinum-900/50 rounded-2xl">
+            <div class="text-4xl font-bold text-electric-500 mb-2" data-i18n="virustotal.detectionCount">3/62</div>
+            <div class="text-platinum-300 text-sm" data-i18n="virustotal.detectionLabel">Detections</div>
+            <div class="text-green-400 text-xs mt-2 font-semibold" data-i18n="virustotal.falsePositiveLabel">Confirmed
+              False Positive</div>
+          </div>
+          <div class="text-center p-6 bg-platinum-900/50 rounded-2xl">
+            <div class="text-2xl font-bold text-electric-500 mb-2" data-i18n="virustotal.statusTitle">Status</div>
+            <div class="text-green-400 text-lg font-semibold mb-2" data-i18n="virustotal.statusValue">SAFE</div>
+            <div class="text-platinum-300 text-sm">100% Open Source</div>
+          </div>
+          <div class="text-center p-6 bg-platinum-900/50 rounded-2xl">
+            <div class="text-2xl font-medium text-electric-500 mb-2" data-i18n="virustotal.hashTitle">SHA-256</div>
+            <div class="text-platinum-300 text-xs font-mono break-all" data-i18n="virustotal.hashValue">
+              89a0b2aa212380f906af3d42bace1bc0aa9acdb156624844848695b950127337</div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-red-500/10 p-6 rounded-2xl border border-red-500/20">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400"></i>
+              <h3 class="text-xl font-bold text-red-400" data-i18n="virustotal.falsePositiveTitle">Why is it detected as
+                a false positive?</h3>
+            </div>
+            <p class="text-platinum-300 text-sm leading-relaxed" data-i18n="virustotal.falsePositiveDescription"></p>
+          </div>
+
+          <div class="bg-green-500/10 p-6 rounded-2xl border border-green-500/20">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="shield-check" class="w-6 h-6 text-green-400"></i>
+              <h3 class="text-xl font-bold text-green-400" data-i18n="virustotal.safeTitle">Safe to use</h3>
+            </div>
+            <p class="text-platinum-300 text-sm leading-relaxed" data-i18n="virustotal.safeDescription"></p>
+          </div>
+        </div>
+
+        <div class="mt-10 text-center">
+          <a href="https://www.virustotal.com/gui/file/89a0b2aa212380f906af3d42bace1bc0aa9acdb156624844848695b950127337?nocache=1"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-platinum-800 text-white rounded-full hover:bg-platinum-700 transition-all font-medium">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span data-i18n="virustotal.viewReport">View Full Report on VirusTotal</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Target Audience (FOR WHOM) -->
+  <section id="target" class="py-24 md:py-32 relative z-10 overflow-hidden bg-black/10">
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-electric-500/5 via-transparent to-electric-500/5 pointer-events-none">
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="text-center mb-20 reveal-on-scroll">
+        <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="target.title">Who is it for
+        </h2>
+        <p class="text-platinum-300 text-lg max-w-2xl mx-auto" data-i18n="target.subtitle"></p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 scale-up-on-scroll" id="target-items-container"></div>
+    </div>
+  </section>
+
+  <!-- Download & Execution (GUIDE) -->
+  <section id="activation" class="py-24 md:py-32 relative z-10 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16 reveal-on-scroll">
+          <div
+            class="mb-10 inline-block px-6 py-2 rounded-full bg-electric-500/10 border border-electric-500/20 text-electric-400 text-sm font-bold tracking-widest uppercase shadow-glow"
+            data-i18n="download.version">Windows 8.5 Beta V2</div>
+          <h2 class="text-4xl md:text-6xl font-serif font-bold mb-6 text-white" data-i18n="steps.title"></h2>
+          <p class="text-platinum-300 text-lg max-w-3xl mx-auto" data-i18n="steps.subtitle"></p>
+        </div>
+
+        <div
+          class="glass border border-electric-500/20 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden scale-up-on-scroll">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-electric-500/10 rounded-full blur-[80px] pointer-events-none">
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <div class="space-y-6" id="steps-list">
+              <!-- Injected by JS -->
+            </div>
+
+            <div class="flex flex-col gap-8">
+              <div class="relative rounded-2xl overflow-hidden border border-white/5 shadow-2xl bg-platinum-900 group">
+                <img src="image/tutoria.PNG" alt="Guide Screenshot"
+                  class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105">
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-platinum-950 via-transparent to-transparent opacity-40">
+                </div>
+              </div>
+
+              <div
+                class="scale-up-on-scroll p-8 bg-gradient-to-br from-white/5 to-transparent border border-white/5 rounded-3xl relative overflow-hidden group">
+                <div
+                  class="absolute -right-4 -top-4 w-24 h-24 bg-electric-500/10 rounded-full blur-2xl group-hover:bg-electric-500/20 transition-all">
+                </div>
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-12 h-12 bg-electric-500 rounded-2xl flex items-center justify-center shadow-glow">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                  </div>
+                  <h4 class="text-2xl font-serif font-bold text-white" data-i18n="steps.securityTitle">Protocollo di
+                    Sicurezza</h4>
+                </div>
+                <ul class="space-y-4">
+                  <li class="flex items-center gap-3 text-platinum-300 hover:text-white transition-colors">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400"></i>
+                    <span data-i18n="steps.security1">Punto di ripristino effettuato</span>
+                  </li>
+                  <li class="flex items-center gap-3 text-platinum-300 hover:text-white transition-colors">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400"></i>
+                    <span data-i18n="steps.security2">Modifiche sicure e testate</span>
+                  </li>
+                  <li class="flex items-center gap-3 text-platinum-300 hover:text-white transition-colors">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400"></i>
+                    <span data-i18n="steps.security3">Rollback completo garantito</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (FAQ) -->
+  <section id="faq" class="py-24 md:py-32 relative z-10 overflow-hidden bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+      <div class="text-center mb-20 reveal-on-scroll">
+        <h2 class="text-3xl md:text-5xl font-serif font-bold mb-6 text-white" data-i18n="faq.title"></h2>
+        <p class="text-platinum-300 text-lg max-w-3xl mx-auto" data-i18n="faq.subtitle"></p>
+      </div>
+      <div class="w-full max-w-4xl mx-auto space-y-5 reveal-on-scroll reveal-delay-200" id="faq-list"></div>
+    </div>
+  </section>
+
+
+  <footer class="relative z-10 py-24 overflow-hidden">
+
+
+    <div class="relative max-w-7xl mx-auto px-4 md:px-6">
+      <!-- Unified Footer Container (The Navbar Style Box) -->
+      <div
+        class="bg-[#081522]/70 backdrop-blur-2xl rounded-[3rem] md:rounded-[4rem] p-8 md:p-14 border border-white/10 shadow-strong-glow flex flex-col gap-12 md:gap-16 relative">
+
+
+        <!-- 1. Top Section: Brand Bar -->
+        <div class="flex items-center justify-between pb-10 border-b border-white/5">
+          <div class="flex items-center gap-4 shrink-0">
+            <img src="image/logo.jpg" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-xl blend-screen shadow-glow">
+            <span class="text-xl md:text-2xl font-serif font-bold text-white tracking-[0.25em] uppercase">Platinum+
+              Optimizer</span>
+          </div>
+        </div>
+
+        <!-- 2. Middle Section: Creators & Actions -->
+        <div class="grid lg:grid-cols-2 gap-12">
+
+          <!-- Creators Column -->
+          <div class="space-y-6 reveal-on-scroll">
+            <div class="footer-section-header">
+              <h4 data-i18n="footer.creators">Creators</h4>
+              <div class="line"></div>
+            </div>
+
+            <div class="grid gap-3">
+              <!-- Stefano -->
+              <a href="#"
+                onclick="openSocialModal('Stefano', 'Owner', 'https://t.me/STEFANO83223', 'https://www.youtube.com/@STEFANO_MOR_MUSIC4452', 'https://www.tiktok.com/@rtx_4060_laptop'); return false;"
+                class="creator-card group">
+                <div class="icon-wrapper">
+                  <div class="absolute inset-0 bg-gradient-to-tr from-electric-600/20 to-transparent"></div>
+                  <i data-lucide="crown"
+                    class="w-5 h-5 text-electric-400 group-hover:text-electric-300 relative z-10 transition-colors"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-white text-xs font-bold uppercase tracking-widest mb-0.5 group-hover:text-electric-400 transition-colors">
+                    @STEFANO83223</p>
+                  <span class="text-[9px] text-platinum-400 font-medium tracking-widest uppercase"
+                    data-i18n="footer.credits.owner">Owner & Tweak Dev</span>
+                </div>
+                <i data-lucide="arrow-right"
+                  class="w-4 h-4 ml-auto text-platinum-600 group-hover:text-electric-400 group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100"></i>
+              </a>
+
+              <!-- Ale -->
+              <a href="#"
+                onclick="openSocialModal('Aledect', 'footer.credits.webdeveloper', 'https://t.me/Aledect', 'https://youtube.com/@aledect', 'https://tiktok.com/@aledect'); return false;"
+                class="creator-card group">
+                <div class="icon-wrapper">
+                  <div class="absolute inset-0 bg-gradient-to-tr from-electric-600/20 to-transparent"></div>
+                  <i data-lucide="palette"
+                    class="w-5 h-5 text-electric-400 group-hover:text-electric-300 relative z-10 transition-colors"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-white text-xs font-bold uppercase tracking-widest mb-0.5 group-hover:text-electric-400 transition-colors">
+                    @Aledect</p>
+                  <span class="text-[9px] text-platinum-400 font-medium tracking-widest uppercase"
+                    data-i18n="footer.credits.webdeveloper">Web Developer</span>
+                </div>
+                <i data-lucide="arrow-right"
+                  class="w-4 h-4 ml-auto text-platinum-600 group-hover:text-electric-400 group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Actions Column -->
+          <div class="space-y-6 reveal-on-scroll reveal-delay-200">
+            <div class="footer-section-header">
+              <h4 data-i18n="footer.support">Support & Community</h4>
+              <div class="line"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <!-- Report Bug -->
+              <a href="https://t.me/+AKZO7Y5buhw0ZjRk" target="_blank" class="footer-btn btn-bug group">
+                <i data-lucide="bug" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i>
+                <span data-i18n="bugReport.btnLabel">Report Bug</span>
+              </a>
+
+              <!-- Join Telegram -->
+              <a href="https://t.me/+AKZO7Y5buhw0ZjRk" target="_blank" class="footer-btn btn-telegram group">
+                <i data-lucide="send"
+                  class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                <span data-i18n="footer.telegramBtn">Join Telegram</span>
+              </a>
+
+              <!-- Email Support -->
+              <a href="https://mail.google.com/mail/u/0/?fs=1&to=platinumoptimizerhelp@gmail.com&tf=cm" target="_blank"
+                class="footer-btn group">
+                <i data-lucide="mail" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                <span data-i18n="footer.emailSupportBtn">Email Support</span>
+              </a>
+
+              <!-- Donations -->
+              <a href="https://ko-fi.com/platinumoptimizer" target="_blank" class="footer-btn btn-donate group">
+                <i data-lucide="coffee" class="w-4 h-4 group-hover:scale-110 transition-transform text-orange-500"></i>
+                <span data-i18n="footer.donationsBtn">Donations</span>
+              </a>
+
+              <!-- Privacy Policy -->
+              <button id="btn-privacy" onclick="openModal('privacy', this)" class="footer-btn group">
+                <i data-lucide="shield-check" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                <span data-i18n="footer.privacy">Privacy Policy</span>
+              </button>
+
+              <!-- Disclaimer -->
+              <button id="btn-disclaimer" onclick="openModal('disclaimer', this)" class="footer-btn group">
+                <i data-lucide="alert-circle" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                <span data-i18n="footer.legalDisclaimer">Disclaimer</span>
+              </button>
+            </div>
+          </div>
+        </div> <!-- Fine Grid -->
+
+        <!-- 3. Bottom Section: Copyright & Copyright Notice -->
+        <div class="text-center pt-8 border-t border-white/5 space-y-4 reveal-on-scroll">
+          <p data-i18n="footer.copyright" class="text-platinum-400 font-bold tracking-[0.2em] text-[10px] uppercase">
+          </p>
+          <p data-i18n="footer.disclaimer"
+            class="text-[9px] leading-relaxed text-platinum-300/20 uppercase tracking-[0.3em] max-w-4xl mx-auto"></p>
+        </div>
+      </div> <!-- Fine Box Vetro -->
+    </div> <!-- Fine Container max-w-7xl -->
+  </footer>
+
+  <!-- Video Intro Modal -->
+
+
+  <!-- Video Intro Modal (Original) -->
+
+
+  <!-- JavaScript Unificato -->
+  <!-- Altri contenuti esistenti... -->
+  <!-- Visitor Counter Widget -->
+
+  <div id="visitor-counter"
+    class="fixed bottom-6 right-6 z-[9999] bg-transparent backdrop-blur-sm px-4 py-2.5 rounded-2xl flex items-center gap-3 border border-white/5 shadow-2xl transition-all duration-500 hover:scale-105 group opacity-80 hover:opacity-100">
+    <div class="relative">
+      <div class="w-2.5 h-2.5 bg-electric-400 rounded-full animate-pulse-slow"></div>
+      <div class="absolute inset-0 w-2.5 h-2.5 bg-electric-400 rounded-full animate-ping opacity-40"></div>
+    </div>
+    <div class="flex flex-col leading-none">
+      <span data-i18n="footer.visitorsLabel"
+        class="text-[10px] text-platinum-400 uppercase tracking-widest font-bold mb-1">Visitors</span>
+      <span id="visit-count" class="text-lg font-mono text-white">0000000</span>
+    </div>
+  </div>
+
+  <script>
+    // Immediate anti-FOUC restoration to prevent white screen
+    document.documentElement.style.visibility = 'visible';
+    document.documentElement.style.opacity = '1';
+  </script>
+
+  <!-- Welcome Popup salvato sopra -->
+
+  <script src="script.js"></script>
+</body>
+
+</html>

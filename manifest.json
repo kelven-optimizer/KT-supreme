@@ -1,0 +1,73 @@
+{
+  "name": "KT Optimizer - Performance Extrema",
+  "short_name": "KT Optimizer",
+  "description": "Otimização real e profunda de kernel para Windows. Melhore FPS, reduza latência e maximize o desempenho do seu PC.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#150329",
+  "theme_color": "#7C3AED",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "utilities",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "kt-interface.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Interface do KT Optimizer"
+    },
+    {
+      "src": "task.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Resultados de Performance"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Download",
+      "short_name": "Download",
+      "description": "Baixar KT Optimizer",
+      "url": "/#download",
+      "icons": [
+        {
+          "src": "logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Benchmarks",
+      "short_name": "Benchmarks",
+      "description": "Ver resultados de performance",
+      "url": "/#benchmarks-section",
+      "icons": [
+        {
+          "src": "logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

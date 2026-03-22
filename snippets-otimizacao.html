@@ -1,0 +1,340 @@
+<!-- ============================================ -->
+<!-- SNIPPETS DE OTIMIZAÇÃO PARA INDEX.HTML -->
+<!-- ============================================ -->
+
+<!-- 1. ADICIONAR NO <HEAD> (após o <meta charset>) -->
+<!-- ============================================ -->
+
+<!-- DNS Prefetch e Preconnect -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Preload Critical Resources -->
+<link rel="preload" href="logo.png" as="image" type="image/png">
+<link rel="preload" href="style.css" as="style">
+<link rel="preload" href="script.js" as="script">
+<link rel="preload" href="three.min.js" as="script">
+
+<!-- Preload Critical Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
+
+<!-- Meta Tags de Performance -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#150329">
+
+<!-- ============================================ -->
+<!-- 2. MODIFICAR SCRIPTS (substituir as tags <script> existentes) -->
+<!-- ============================================ -->
+
+<!-- Three.js com defer -->
+<script src="three.min.js" defer></script>
+
+<!-- Lucide Icons com defer -->
+<script src="lucide@latest" defer></script>
+
+<!-- Script principal com defer -->
+<script src="script.js" defer></script>
+
+<!-- ============================================ -->
+<!-- 3. ADICIONAR ANTES DO </body> -->
+<!-- ============================================ -->
+
+<!-- Performance Optimizations -->
+<script src="performance-optimizations.js"></script>
+
+<!-- Inline Critical Performance Script (opcional - para carregamento ainda mais rápido) -->
+<script>
+// Preload crítico inline
+(function() {
+    // Detectar mobile
+    const isMobile = window.innerWidth < 768;
+    
+    // Reduzir qualidade em mobile
+    if (isMobile) {
+        document.documentElement.classList.add('mobile-optimized');
+    }
+    
+    // Prevenir FOUC
+    document.documentElement.style.visibility = 'visible';
+    document.documentElement.style.opacity = '1';
+    
+    // Lazy load images
+    if ('loading' in HTMLImageElement.prototype) {
+        const images = document.querySelectorAll('img[data-src]');
+        images.forEach(img => {
+            img.src = img.dataset.src;
+        });
+    } else {
+        // Fallback para navegadores antigos
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+        document.body.appendChild(script);
+    }
+})();
+</script>
+
+<!-- ============================================ -->
+<!-- 4. EXEMPLOS DE IMAGENS OTIMIZADAS -->
+<!-- ============================================ -->
+
+<!-- Imagem crítica (hero) - carregar imediatamente -->
+<img src="logo.png" 
+     alt="KT Optimizer Logo" 
+     width="144" 
+     height="144"
+     loading="eager" 
+     decoding="async"
+     class="w-36 h-36">
+
+<!-- Imagem não crítica - lazy load -->
+<img data-src="kt-interface.png" 
+     alt="Interface" 
+     width="800" 
+     height="600"
+     loading="lazy" 
+     decoding="async"
+     class="w-full h-auto">
+
+<!-- Imagem com placeholder blur -->
+<img data-src="task.jpg" 
+     alt="Task Manager" 
+     loading="lazy" 
+     decoding="async"
+     style="background: linear-gradient(to bottom, #1a1a2e, #16213e); min-height: 400px;"
+     class="w-full h-auto">
+
+<!-- ============================================ -->
+<!-- 5. CSS INLINE CRÍTICO (adicionar no <head>) -->
+<!-- ============================================ -->
+
+<style>
+/* Critical CSS - Carrega primeiro */
+body {
+    margin: 0;
+    padding: 0;
+    background: #150329;
+    color: #E0EAF4;
+    font-family: Inter, system-ui, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Prevenir FOUC */
+html {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(124, 58, 237, 0.3);
+    border-top-color: #7C3AED;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 9999;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Hero section crítico */
+#hero-section {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navbar crítico */
+#navbar {
+    position: fixed;
+    top: 1.5rem;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin: 0 auto;
+    width: 95%;
+    max-width: 1280px;
+}
+</style>
+
+<!-- ============================================ -->
+<!-- 6. NOSCRIPT FALLBACK -->
+<!-- ============================================ -->
+
+<noscript>
+    <style>
+        .requires-js {
+            display: none !important;
+        }
+        .noscript-message {
+            display: block !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #dc2626;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            z-index: 99999;
+        }
+    </style>
+    <div class="noscript-message">
+        ⚠️ JavaScript é necessário para o funcionamento completo do site.
+    </div>
+</noscript>
+
+<!-- ============================================ -->
+<!-- 7. SERVICE WORKER (criar arquivo sw.js separado) -->
+<!-- ============================================ -->
+
+<script>
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('✅ Service Worker registrado'))
+            .catch(err => console.log('❌ Erro no Service Worker:', err));
+    });
+}
+</script>
+
+<!-- ============================================ -->
+<!-- 8. WEBP COM FALLBACK -->
+<!-- ============================================ -->
+
+<picture>
+    <source srcset="logo.webp" type="image/webp">
+    <source srcset="logo.png" type="image/png">
+    <img src="logo.png" alt="Logo" loading="lazy" decoding="async">
+</picture>
+
+<!-- ============================================ -->
+<!-- 9. RESPONSIVE IMAGES -->
+<!-- ============================================ -->
+
+<img srcset="logo-small.png 480w,
+             logo-medium.png 800w,
+             logo-large.png 1200w"
+     sizes="(max-width: 480px) 480px,
+            (max-width: 800px) 800px,
+            1200px"
+     src="logo-large.png"
+     alt="Logo"
+     loading="lazy"
+     decoding="async">
+
+<!-- ============================================ -->
+<!-- 10. FONT LOADING OTIMIZADO -->
+<!-- ============================================ -->
+
+<link rel="preload" 
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" 
+      as="style" 
+      onload="this.onload=null;this.rel='stylesheet'">
+
+<noscript>
+    <link rel="stylesheet" 
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+</noscript>
+
+<!-- ============================================ -->
+<!-- 11. ANALYTICS OTIMIZADO (se usar) -->
+<!-- ============================================ -->
+
+<!-- Google Analytics com defer -->
+<script defer src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- ============================================ -->
+<!-- 12. MANIFEST.JSON (PWA) -->
+<!-- ============================================ -->
+
+<link rel="manifest" href="/manifest.json">
+
+<!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" href="logo.png">
+
+<!-- ============================================ -->
+<!-- 13. OPEN GRAPH E TWITTER CARDS -->
+<!-- ============================================ -->
+
+<!-- Open Graph -->
+<meta property="og:title" content="KT Optimizer - Otimização Real">
+<meta property="og:description" content="Performance extrema para Windows">
+<meta property="og:image" content="https://seusite.com/logo.png">
+<meta property="og:url" content="https://seusite.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KT Optimizer">
+<meta name="twitter:description" content="Performance extrema para Windows">
+<meta name="twitter:image" content="https://seusite.com/logo.png">
+
+<!-- ============================================ -->
+<!-- 14. STRUCTURED DATA (SEO) -->
+<!-- ============================================ -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "KT Optimizer",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "1250"
+  }
+}
+</script>
+
+<!-- ============================================ -->
+<!-- 15. LOADING SKELETON (opcional) -->
+<!-- ============================================ -->
+
+<div id="loading-skeleton" class="fixed inset-0 bg-[#150329] z-[10000]">
+    <div class="flex items-center justify-center h-screen">
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<script>
+// Remover skeleton quando página carregar
+window.addEventListener('load', () => {
+    const skeleton = document.getElementById('loading-skeleton');
+    if (skeleton) {
+        skeleton.style.opacity = '0';
+        skeleton.style.transition = 'opacity 0.3s';
+        setTimeout(() => skeleton.remove(), 300);
+    }
+});
+</script>
+
+<!-- ============================================ -->
+<!-- FIM DOS SNIPPETS -->
+<!-- ============================================ -->
