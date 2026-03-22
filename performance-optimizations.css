@@ -1,0 +1,198 @@
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS CSS
+   Otimizações adicionais para máxima performance
+   ============================================ */
+
+/* 1. Otimizar rendering com will-change apenas quando necessário */
+.is-scrolling * {
+    will-change: auto !important;
+}
+
+/* 2. Usar transform e opacity para animações (GPU accelerated) */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 3. Otimizar backdrop-filter em mobile */
+@media (max-width: 768px) {
+    .glass,
+    .liquid-glass,
+    .backdrop-blur-2xl,
+    .backdrop-blur-xl,
+    .backdrop-blur-lg {
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+}
+
+/* 4. Desabilitar animações em low-end devices */
+.low-end-device * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1s !important;
+}
+
+.low-end-device .animate-float,
+.low-end-device .animate-float-delayed,
+.low-end-device .animate-glow-blue {
+    animation: none !important;
+}
+
+/* 5. Otimizar shadows */
+.low-end-device .shadow-2xl,
+.low-end-device .shadow-xl,
+.low-end-device .shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 6. Reduzir blur em low-end */
+.low-end-device .blur-3xl,
+.low-end-device .blur-2xl,
+.low-end-device .blur-xl {
+    filter: blur(20px) !important;
+}
+
+/* 7. Otimizar gradientes */
+.mobile-optimized .bg-gradient-to-r,
+.mobile-optimized .bg-gradient-to-t,
+.mobile-optimized .bg-gradient-to-b {
+    background-image: none !important;
+    background-color: rgba(124, 58, 237, 0.1) !important;
+}
+
+/* 8. Usar contain para isolar rendering */
+.bench-img-wrap,
+.whom-card,
+.vt-card,
+.accordion-item {
+    contain: layout style paint;
+}
+
+/* 9. Otimizar imagens */
+img {
+    content-visibility: auto;
+}
+
+/* 10. Reduzir motion para quem prefere */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* 11. Otimizar scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* 12. Usar GPU acceleration apenas onde necessário */
+.btn,
+.nav-links a,
+.bench-img-wrap,
+.whom-card {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 13. Otimizar hover states */
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover,
+    .bench-img-wrap:hover {
+        transform: translateZ(0) scale(1.05);
+    }
+}
+
+/* 14. Desabilitar hover em touch devices */
+@media (hover: none) {
+    .btn:hover,
+    .bench-img-wrap:hover,
+    .whom-card:hover {
+        transform: none !important;
+    }
+}
+
+/* 15. Otimizar fonts */
+.fonts-loaded body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* 16. Reduzir repaints */
+.fixed,
+.sticky {
+    will-change: transform;
+}
+
+/* 17. Otimizar z-index stacking */
+#global-animation-container {
+    isolation: isolate;
+}
+
+/* 18. Usar containment para sections */
+section {
+    contain: layout style;
+}
+
+/* 19. Otimizar particle canvas */
+#particle-canvas {
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* 20. Reduzir complexity em mobile */
+@media (max-width: 768px) {
+    .shadow-strong-glow {
+        box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    .drop-shadow-2xl {
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3)) !important;
+    }
+}
+
+/* 21. Otimizar transitions */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 22. Usar content-visibility para off-screen content */
+.bench-stats,
+.changelog-diff,
+.faq-item {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* 23. Otimizar modal rendering */
+.modal {
+    contain: layout style paint;
+}
+
+/* 24. Reduzir overdraw */
+.absolute.inset-0 {
+    contain: strict;
+}
+
+/* 25. Performance hints */
+.hero,
+.benchmarks-section {
+    contain: layout style;
+}

@@ -20,12 +20,12 @@ function initGridAnimationOptimized(theme = 'deep-space', showShapes = true) {
 
     // Configurações otimizadas baseadas no dispositivo
     const config = {
-        particleCount: isLowEnd ? 1000 : 3000, // Reduzido de 5000
-        shapeCount: isLowEnd ? 2 : (showShapes ? 3 : 0), // Reduzido de 5
-        orbCount: isLowEnd ? 3 : 5, // Reduzido de 8
-        pixelRatio: isLowEnd ? 1 : Math.min(window.devicePixelRatio, 2), // Limitar pixel ratio
-        antialias: !isLowEnd, // Desabilitar em low-end
-        shadowMap: false, // Desabilitar sombras
+        particleCount: isLowEnd ? 800 : 2500, // Reduzido ainda mais
+        shapeCount: isLowEnd ? 1 : (showShapes ? 2 : 0), // Reduzido ainda mais
+        orbCount: isLowEnd ? 2 : 4, // Reduzido ainda mais
+        pixelRatio: isLowEnd ? 1 : Math.min(window.devicePixelRatio, 1.5), // Limitado a 1.5
+        antialias: !isLowEnd && window.devicePixelRatio < 2, // Apenas em telas normais
+        shadowMap: false,
         fps: isLowEnd ? 30 : 60
     };
 
@@ -120,10 +120,10 @@ function initGridAnimationOptimized(theme = 'deep-space', showShapes = true) {
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
             const material = new THREE.PointsMaterial({
-                size: isLowEnd ? 2 : 2.5,
+                size: isLowEnd ? 1.5 : 2,
                 color: this.theme === 'red' ? 0xff4400 : 0x7C3AED,
                 transparent: true,
-                opacity: 0.5, // Reduzido de 0.6
+                opacity: 0.4, // Reduzido ainda mais
                 blending: THREE.AdditiveBlending,
                 sizeAttenuation: true,
                 depthWrite: false // Otimização

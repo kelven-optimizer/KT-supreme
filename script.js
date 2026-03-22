@@ -7,7 +7,7 @@ const SUPPORTED_LANGUAGES = [
 
 const DOWNLOAD_URL = "https://ik.imagekit.io/gc3sslajp/KT OptimizerOptimizer.8.5V.bat";
 const TELEGRAM_URL = "https://t.me/+AKZO7Y5buhw0ZjRk";
-const CONTACT_EMAIL = "platinumoptimizerhelp@gmail.com";
+const CONTACT_EMAIL = "ktsupreme@gmail.com";
 
 // ============ CONTENUTI TRADUZIONI ============
 const PT_CONTENT = {
@@ -1681,7 +1681,7 @@ function updateLanguage(lang) {
                     <div class="terminal-header">
                         <div class="terminal-title">
                             <i data-lucide="terminal" class="w-4 h-4 text-electric-400"></i>
-                            <span>PowerShell - platinum_optimizer</span>
+                            <span>PowerShell - KT_Supreme</span>
                         </div>
                         <div class="terminal-controls">
                             <span>&minus;</span>
@@ -2670,13 +2670,13 @@ async function initVisitorCounter() {
     const containerEl = document.getElementById('visitor-counter');
     if (!counterEl) return;
 
-    const namespace = "platinum-plus-optimizer-v7";
+    const namespace = "kt-supreme-v2-2024";
     const key = "visits";
     let lastCount = 0;
 
     async function fetchCount(isFirstLoad = false) {
-        // Verifica se l'utente ha giÃƒ  visitato il sito in questa sessione
-        const hasVisited = sessionStorage.getItem('has_visited_platinum');
+        // Verifica se o usuário já visitou o site nesta sessão
+        const hasVisited = sessionStorage.getItem('has_visited_kt_supreme');
         const mode = (isFirstLoad && !hasVisited) ? 'up' : 'get';
         const url = `https://api.counterapi.dev/v1/${namespace}/${key}/${mode}`;
 
@@ -2688,9 +2688,9 @@ async function initVisitorCounter() {
 
                 if (isFirstLoad) {
                     animateCount(counterEl, 0, count, 2000);
-                    if (!hasVisited) sessionStorage.setItem('has_visited_platinum', 'true');
+                    if (!hasVisited) sessionStorage.setItem('has_visited_kt_supreme', 'true');
                 } else if (count > lastCount) {
-                    // Flash effect per aggiornamento reale
+                    // Flash effect para atualização em tempo real
                     containerEl.classList.add('ring-2', 'ring-electric-400/50');
                     animateCount(counterEl, lastCount, count, 1000);
                     setTimeout(() => containerEl.classList.remove('ring-2', 'ring-electric-400/50'), 1500);
@@ -2702,10 +2702,10 @@ async function initVisitorCounter() {
         }
     }
 
-    // Primo caricamento
+    // Primeiro carregamento
     await fetchCount(true);
 
-    // Aggiornamento reale ogni 10 secondi
+    // Atualização em tempo real a cada 10 segundos
     setInterval(() => fetchCount(false), 10000);
 }
 

@@ -13,11 +13,11 @@
 
     // Configurações baseadas no dispositivo
     const config = {
-        particleCount: isLowEnd ? 30 : 50,
-        maxTrail: isLowEnd ? 10 : 20,
+        particleCount: isLowEnd ? 25 : 40, // Reduzido ainda mais
+        maxTrail: isLowEnd ? 8 : 15, // Reduzido ainda mais
         enableMouseTrail: !isMobile && !prefersReducedMotion,
-        enableParallax: !isMobile && !prefersReducedMotion,
-        enableCardTilt: !isMobile && !prefersReducedMotion,
+        enableParallax: !isMobile && !prefersReducedMotion && !isLowEnd, // Desabilitar em low-end
+        enableCardTilt: !isMobile && !prefersReducedMotion && !isLowEnd, // Desabilitar em low-end
         animationQuality: isLowEnd ? 'low' : 'high'
     };
 
