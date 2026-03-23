@@ -196,3 +196,52 @@ section {
 .benchmarks-section {
     contain: layout style;
 }
+
+/* ============================================
+   PAGE LOADER
+   ============================================ */
+
+#page-loader {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#page-loader img {
+    animation: loader-pulse 2s ease-in-out infinite;
+}
+
+@keyframes loader-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.6));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 40px rgba(124, 58, 237, 1));
+    }
+}
+
+/* Spinner animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Progress bar glow */
+#loader-progress {
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* Prevent scroll while loading */
+body:has(#page-loader:not([style*="display: none"])) {
+    overflow: hidden !important;
+}
+

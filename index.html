@@ -51,6 +51,31 @@ tailwind.config = {
 </head>
 <body class="overflow-x-hidden" style="background:#150329;color:#E0EAF4;font-family:Inter,system-ui,sans-serif">
 
+<!-- LOADER -->
+<div id="page-loader" class="fixed inset-0 z-[100000] bg-[#150329] flex items-center justify-center transition-opacity duration-700">
+  <div class="text-center">
+    <!-- Logo animado -->
+    <div class="mb-8 flex justify-center">
+      <img src="logo.png" alt="KT Supreme Logo" class="w-24 h-24 rounded-2xl animate-pulse" style="filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.8));">
+    </div>
+    
+    <!-- Spinner -->
+    <div class="relative w-16 h-16 mx-auto mb-6">
+      <div class="absolute inset-0 border-4 border-electric/20 rounded-full"></div>
+      <div class="absolute inset-0 border-4 border-transparent border-t-electric rounded-full animate-spin"></div>
+    </div>
+    
+    <!-- Texto -->
+    <div class="text-electric text-lg font-bold mb-2">KT SUPREME V2</div>
+    <div class="text-text3 text-sm">Carregando otimizações...</div>
+    
+    <!-- Barra de progresso -->
+    <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-6 mx-auto">
+      <div id="loader-progress" class="h-full bg-gradient-to-r from-electric to-electric-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+
 <!-- 3D BACKGROUND -->
 <div id="global-animation-container" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></div>
 
@@ -417,10 +442,10 @@ tailwind.config = {
             <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
             <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container" id="slider-sys-before">
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager CPU before.PNG')"><img src="task manager CPU before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU Before"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager CPU before.PNG', this)"><img src="task manager CPU before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU Before"></div>
               </div>
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager RAM before.PNG')"><img src="task manager RAM before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM Before"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task manager RAM before.PNG', this)"><img src="task manager RAM before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM Before"></div>
               </div>
               <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-before', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
               <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-before', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
@@ -431,10 +456,10 @@ tailwind.config = {
             <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
             <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric/10 overflow-hidden relative group slider-container" id="slider-sys-after">
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task cpu tweaked.PNG')"><img src="task cpu tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU After"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('task cpu tweaked.PNG', this)"><img src="task cpu tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="CPU After"></div>
               </div>
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('ram task tweaked.PNG')"><img src="ram task tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM After"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('ram task tweaked.PNG', this)"><img src="ram task tweaked.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="RAM After"></div>
               </div>
               <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-after', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
               <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-sys-after', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
@@ -462,11 +487,11 @@ tailwind.config = {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="space-y-4">
             <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
-            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z before.PNG')"><img src="cpu z before.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z Before"></div>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z before.PNG', this)"><img src="cpu z before.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z Before"></div>
           </div>
           <div class="space-y-4">
             <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
-            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z after.PNG')"><img src="cpu z after.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z After"></div>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu z after.PNG', this)"><img src="cpu z after.PNG" class="w-full h-auto object-contain opacity-90" alt="CPU-Z After"></div>
           </div>
           <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div class="bg-black/40 p-5 rounded-2xl border border-white/5 text-center"><div class="text-kt-400 text-xs tracking-wider uppercase mb-2">Single Thread</div><div class="flex items-center justify-center gap-3"><span class="text-xl text-red-500">560.4 pts</span><i data-lucide="arrow-right" class="w-4 h-4 text-white/30"></i><span class="text-3xl font-bold text-green-500">603.4 pts</span></div></div>
@@ -482,10 +507,10 @@ tailwind.config = {
             <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
             <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-black/30 overflow-hidden relative group slider-container" id="slider-geek-before">
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu before.PNG')"><img src="cpu before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU Before"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu before.PNG', this)"><img src="cpu before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU Before"></div>
               </div>
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench before.PNG')"><img src="gpu bench before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU Before"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench before.PNG', this)"><img src="gpu bench before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU Before"></div>
               </div>
               <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-before', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
               <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-before', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
@@ -496,10 +521,10 @@ tailwind.config = {
             <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
             <div class="w-full h-auto rounded-2xl grid grid-cols-1 grid-rows-1 items-center justify-items-center bg-electric/10 overflow-hidden relative group slider-container" id="slider-geek-after">
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto flex items-center justify-center opacity-100 transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu after.PNG')"><img src="cpu after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU After"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('cpu after.PNG', this)"><img src="cpu after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="CPU After"></div>
               </div>
               <div class="slider-slide col-start-1 row-start-1 w-full h-auto opacity-0 pointer-events-none flex items-center justify-center transition-opacity duration-300">
-                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench after.PNG')"><img src="gpu bench after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU After"></div>
+                <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('gpu bench after.PNG', this)"><img src="gpu bench after.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" alt="GPU After"></div>
               </div>
               <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-after', -1)"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
               <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 z-20 opacity-0 group-hover:opacity-100 transition-opacity" onclick="moveBenchmarkSlider('slider-geek-after', 1)"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
@@ -518,7 +543,7 @@ tailwind.config = {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div class="space-y-4">
             <h3 class="text-xl font-bold text-red-500 flex items-center justify-center gap-2"><i data-lucide="x-circle" class="w-5 h-5"></i> <span>Antes (Padrão)</span></h3>
-            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('latency moon before.PNG')"><img src="latency moon before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Latency Before"></div>
+            <div class="relative group rounded-2xl modern-frame overflow-hidden cursor-zoom-in" onclick="openLightbox('latency moon before.PNG', this)"><img src="latency moon before.PNG" class="w-full h-auto object-contain opacity-90 group-hover:opacity-100" alt="Latency Before"></div>
           </div>
           <div class="space-y-4">
             <h3 class="text-xl font-bold text-green-500 flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Depois do KT Optimizer</span></h3>
@@ -814,6 +839,63 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof initGridAnimationOptimized !== 'undefined') {
     window.initGridAnimation = initGridAnimationOptimized;
 }
+</script>
+
+<!-- Page Loader Script -->
+<script>
+(function() {
+    const loader = document.getElementById('page-loader');
+    const progress = document.getElementById('loader-progress');
+    
+    if (!loader || !progress) return;
+    
+    let currentProgress = 0;
+    const targetProgress = 100;
+    const duration = 2000; // 2 segundos
+    const startTime = Date.now();
+    
+    // Animar progresso
+    function animateProgress() {
+        const elapsed = Date.now() - startTime;
+        const progressPercent = Math.min((elapsed / duration) * 100, targetProgress);
+        
+        currentProgress = progressPercent;
+        progress.style.width = progressPercent + '%';
+        
+        if (progressPercent < targetProgress) {
+            requestAnimationFrame(animateProgress);
+        }
+    }
+    
+    // Iniciar animação de progresso
+    animateProgress();
+    
+    // Remover loader quando tudo carregar
+    window.addEventListener('load', () => {
+        // Garantir que chegou a 100%
+        progress.style.width = '100%';
+        
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 700);
+        }, 300);
+    });
+    
+    // Fallback: remover após 5 segundos mesmo se não carregar tudo
+    setTimeout(() => {
+        if (loader.style.display !== 'none') {
+            progress.style.width = '100%';
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 700);
+        }
+    }, 5000);
+})();
 </script>
 
 <!-- Service Worker Registration (comentado por padrão) -->
